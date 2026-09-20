@@ -6,8 +6,7 @@ allowed-tools: Read Write Bash(ls:*)
 metadata:
   version: "1"
 source:
-  upstream: me-cedric/agent-compass (skills/)
-  via: a private work repository (src-tauri/, vendored)
+  upstream: vendored, third-party
   imported: 2026-09-20
 ---
 
