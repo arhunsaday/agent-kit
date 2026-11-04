@@ -91,6 +91,18 @@
       ]
     },
     {
+      "name": "net-watch",
+      "source": "./plugins/net-watch",
+      "description": "Lists the domains contacted in the session (WebFetch URLs; curl, wget, npm, pip and git hosts in Bash) with allow and deny per domain kept in .claude/net-watch.json; denied domains are blocked on the next call",
+      "category": "mod",
+      "tags": [
+        "mod",
+        "network",
+        "safety",
+        "domains"
+      ]
+    },
+    {
       "name": "plan-progress",
       "source": "./plugins/plan-progress",
       "description": "Live plan progress bars above the Claude Code prompt: stages, steps, foldable agent strips and soft sounds",
