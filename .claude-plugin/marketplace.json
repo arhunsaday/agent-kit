@@ -113,6 +113,18 @@
       ]
     },
     {
+      "name": "scope-fence",
+      "source": "./plugins/scope-fence",
+      "description": "Declare the paths Claude may change (.claude/fence.json or /scope-fence); Write, Edit and MultiEdit outside are held with Allow once / Block, and a band shows the fence",
+      "category": "mod",
+      "tags": [
+        "mod",
+        "safety",
+        "scope",
+        "guard"
+      ]
+    },
+    {
       "name": "secret-guard",
       "source": "./plugins/secret-guard",
       "description": "Blocks Write, Edit and Bash calls that would put API keys, tokens, private keys or .env contents on disk or on the network, with a masked preview and an allow-once button.",
