@@ -19,7 +19,7 @@ jobs:
       - name: Validate and test each plugin
         run: |
           set -e
-          for dir in plugins/*/ templates/*/; do
+          for dir in plugins/*/ scaffolds/*/; do
             echo "::group::$dir"
             claude plugin validate "$dir"
             if find "$dir" -name '*.test.ts' -not -path '*/node_modules/*' | grep -q .; then
