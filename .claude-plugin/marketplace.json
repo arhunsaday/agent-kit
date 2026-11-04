@@ -68,6 +68,17 @@
       ]
     },
     {
+      "name": "decision-log",
+      "source": "./plugins/decision-log",
+      "description": "Spots decisions in your prompts (French and English cues like \"on part sur\", \"we'll go with\") and appends them to DECISIONS.md with the date; a band shows the last one and /decision-log lists them.",
+      "category": "mod",
+      "tags": [
+        "mod",
+        "decisions",
+        "log"
+      ]
+    },
+    {
       "name": "plan-progress",
       "source": "./plugins/plan-progress",
       "description": "Live plan progress bars above the Claude Code prompt: stages, steps, foldable agent strips and soft sounds",

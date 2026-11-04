@@ -1,0 +1,12 @@
+{
+  "name": "decision-log",
+  "version": "0.1.0",
+  "description": "Spots decisions in your prompts (French and English cues like \"on part sur\", \"we'll go with\") and appends them to DECISIONS.md with the date; a band shows the last one and /decision-log lists them.",
+  "author": {
+    "name": "Arhun Saday",
+    "url": "https://arhun.fr"
+  },
+  "license": "MIT",
+  "keywords": ["mod", "decisions", "log", "adr", "french"],
+  "types": "./types/index.d.ts"
+}
