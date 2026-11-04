@@ -90,6 +90,17 @@
       ]
     },
     {
+      "name": "secret-guard",
+      "source": "./plugins/secret-guard",
+      "description": "Blocks Write, Edit and Bash calls that would put API keys, tokens, private keys or .env contents on disk or on the network, with a masked preview and an allow-once button.",
+      "category": "mod",
+      "tags": [
+        "mod",
+        "safety",
+        "secrets"
+      ]
+    },
+    {
       "name": "where-am-i",
       "source": "./plugins/where-am-i",
       "description": "A live recap above the prompt: goal, what Claude is doing now, next step and what waits on you",

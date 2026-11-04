@@ -1,0 +1,21 @@
+{
+  "name": "secret-guard",
+  "version": "0.1.0",
+  "description": "Blocks Write, Edit and Bash calls that would put API keys, tokens, private keys or .env contents on disk or on the network, with a masked preview and an allow-once button.",
+  "author": {
+    "name": "Arhun Saday",
+    "url": "https://arhun.fr"
+  },
+  "license": "MIT",
+  "keywords": ["mod", "safety", "secrets", "guard"],
+  "types": "./types/index.d.ts",
+  "userConfig": {
+    "timeoutSeconds": {
+      "type": "number",
+      "title": "Auto-block after (seconds)",
+      "description": "How long a held call waits for an answer before it is blocked. 0 waits forever.",
+      "default": 60,
+      "min": 0
+    }
+  }
+}

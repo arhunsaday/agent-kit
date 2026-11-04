@@ -29,6 +29,7 @@ From a shell, `claude plugin marketplace add arhunsaday/claude-plugins` and `cla
 | [cache-warm](plugins/cache-warm) | mod | Prompt-cache countdown, hit rate and savings above the prompt, with keep-warm pings, toggled by /cache-warm. |
 | [assumptions](plugins/assumptions) | mod | Lists the small guesses Claude made without asking; mark each right or wrong, and a wrong one gets fixed on its own. |
 | [bureau](plugins/bureau) | mod | Le Bureau des agents in a side pane: its pixel-art office and engine, playing your session's agents. |
+| [secret-guard](plugins/secret-guard) | mod | Holds Write, Edit and Bash calls that would put API keys, tokens, private keys or .env contents on disk or on the network; masked preview, allow once. |
 | [preflight](plugins/preflight) | plugin | Lets Claude drive the Preflight CLI: audit your setup, install resources and loadouts with a dry run first, share or import a setup. |
 
 ## Layout
