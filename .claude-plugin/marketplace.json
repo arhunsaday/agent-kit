@@ -68,6 +68,18 @@
       ]
     },
     {
+      "name": "context-diet",
+      "source": "./plugins/context-diet",
+      "description": "Flags big tool results and files read three or more times, and suggests /compact when the context passes a threshold (60% by default); a band lists the top offenders",
+      "category": "mod",
+      "tags": [
+        "mod",
+        "context",
+        "tokens",
+        "compact"
+      ]
+    },
+    {
       "name": "decision-log",
       "source": "./plugins/decision-log",
       "description": "Spots decisions in your prompts (French and English cues like \"on part sur\", \"we'll go with\") and appends them to DECISIONS.md with the date; a band shows the last one and /decision-log lists them.",

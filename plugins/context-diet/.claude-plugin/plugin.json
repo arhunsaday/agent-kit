@@ -1,0 +1,35 @@
+{
+  "name": "context-diet",
+  "version": "0.1.0",
+  "description": "Flags big tool results and files read three or more times, and suggests /compact when the context passes a threshold (60% by default); a band lists the top offenders.",
+  "author": {
+    "name": "Arhun Saday",
+    "url": "https://arhun.fr"
+  },
+  "license": "MIT",
+  "keywords": [
+    "mod",
+    "context",
+    "tokens",
+    "compact",
+    "collapsible"
+  ],
+  "types": "./types/index.d.ts",
+  "userConfig": {
+    "thresholdPercent": {
+      "type": "number",
+      "title": "Suggest /compact at (% of context)",
+      "description": "The context fill at which the band suggests compacting.",
+      "default": 60,
+      "min": 1,
+      "max": 100
+    },
+    "bigResultTokens": {
+      "type": "number",
+      "title": "Big tool result (tokens)",
+      "description": "A tool result above this many tokens (estimated at 4 characters each) is flagged.",
+      "default": 8000,
+      "min": 100
+    }
+  }
+}
