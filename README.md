@@ -31,6 +31,7 @@ From a shell, `claude plugin marketplace add arhunsaday/claude-plugins` and `cla
 | [bureau](plugins/bureau) | mod | Le Bureau des agents in a side pane: its pixel-art office and engine, playing your session's agents. |
 | [secret-guard](plugins/secret-guard) | mod | Holds Write, Edit and Bash calls that would put API keys, tokens, private keys or .env contents on disk or on the network; masked preview, allow once. |
 | [decision-log](plugins/decision-log) | mod | Spots decisions in your prompts (French and English) and appends them to DECISIONS.md; a band shows the last one. |
+| [change-ledger](plugins/change-ledger) | mod | Files Claude touched with +/- lines, and a button that asks Claude to commit exactly that batch. |
 | [net-watch](plugins/net-watch) | mod | Lists the domains a session contacts; allow or deny each in .claude/net-watch.json, and denied ones are blocked on the next call. |
 | [scope-fence](plugins/scope-fence) | mod | Holds Write, Edit and MultiEdit outside the paths you declare (.claude/fence.json or /scope-fence); Allow once or Block. |
 | [context-diet](plugins/context-diet) | mod | Flags big tool results and files read 3+ times, suggests /compact past a context threshold; a band lists the top offenders. |

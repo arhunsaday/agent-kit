@@ -56,6 +56,18 @@
       ]
     },
     {
+      "name": "change-ledger",
+      "source": "./plugins/change-ledger",
+      "description": "Lists the files Claude touched this session with +/- lines in a band above the prompt, and a Commit this batch button that asks Claude to commit exactly those files; collapses to one line",
+      "category": "mod",
+      "tags": [
+        "mod",
+        "git",
+        "changes",
+        "commit"
+      ]
+    },
+    {
       "name": "context-cache",
       "source": "./plugins/context-cache",
       "description": "Context usage, usage limits and prompt-cache warmth above the prompt, drawn in your theme; collapses to one line",
