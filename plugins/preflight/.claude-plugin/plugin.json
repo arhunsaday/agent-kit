@@ -1,0 +1,11 @@
+{
+  "name": "preflight",
+  "version": "0.1.0",
+  "description": "Lets Claude drive the Preflight CLI: audit your AI setup (doctor, context cost), install resources and loadouts with a dry run first, and share or import a setup.",
+  "author": {
+    "name": "Arhun Saday",
+    "url": "https://arhun.fr"
+  },
+  "license": "MIT",
+  "keywords": ["preflight", "audit", "config", "skills", "mcp", "context"]
+}

@@ -79,6 +79,17 @@
       ]
     },
     {
+      "name": "preflight",
+      "source": "./plugins/preflight",
+      "description": "Lets Claude drive the Preflight CLI: audit your AI setup (doctor, context cost), install resources and loadouts with a dry run first, and share or import a setup.",
+      "category": "plugin",
+      "tags": [
+        "preflight",
+        "audit",
+        "config"
+      ]
+    },
+    {
       "name": "where-am-i",
       "source": "./plugins/where-am-i",
       "description": "A live recap above the prompt: goal, what Claude is doing now, next step and what waits on you",

@@ -24,7 +24,7 @@ fi
 
 cp -R "$root/templates/$kind" "$dest"
 grep -rl "example-$kind" "$dest" | while IFS= read -r f; do
-  sed -i '' "s/example-$kind/$name/g" "$f"
+  sed -i.bak "s/example-$kind/$name/g" "$f" && rm -f "$f.bak"
 done
 
 node -e '
