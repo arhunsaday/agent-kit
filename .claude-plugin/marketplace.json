@@ -112,6 +112,18 @@
       ]
     },
     {
+      "name": "spend-meter",
+      "source": "./plugins/spend-meter",
+      "description": "Session and per-turn cost above the prompt with a budget bar, a toast at 80% and a confirmation before the next prompt at 100%; collapses to one line",
+      "category": "mod",
+      "tags": [
+        "mod",
+        "cost",
+        "budget",
+        "usage"
+      ]
+    },
+    {
       "name": "where-am-i",
       "source": "./plugins/where-am-i",
       "description": "A live recap above the prompt: goal, what Claude is doing now, next step and what waits on you",

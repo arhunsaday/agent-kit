@@ -1,0 +1,27 @@
+{
+  "name": "spend-meter",
+  "version": "0.1.0",
+  "description": "Session and per-turn cost above the prompt with a budget bar, a toast at 80% and a confirmation before the next prompt at 100%; collapses to one line.",
+  "author": {
+    "name": "Arhun Saday",
+    "url": "https://arhun.fr"
+  },
+  "license": "MIT",
+  "keywords": ["mod", "cost", "budget", "usage", "collapsible"],
+  "types": "./types/index.d.ts",
+  "userConfig": {
+    "budgetUsd": {
+      "type": "number",
+      "title": "Session budget (US dollars)",
+      "description": "The budget the bar fills toward. 0 turns the budget off (the cost still shows). /spend-meter-budget changes it for later sessions too.",
+      "default": 5,
+      "min": 0
+    },
+    "prices": {
+      "type": "string",
+      "title": "Fallback prices (JSON)",
+      "description": "Only used when the host reports no session cost. {\"model-id\": {\"input\":0,\"output\":0,\"cacheRead\":0,\"cacheWrite\":0}} in US dollars per million tokens. Empty by default: fill in from your provider's price page.",
+      "default": ""
+    }
+  }
+}
