@@ -15,7 +15,7 @@ when a UI looks wrong and nobody can say why.
 ## More design coverage
 
 Deliberately not vendored here — these are other people's, so they are installed
-by the CLI and listed in [`../../../skills/THIRD-PARTY.md`](../../../skills/THIRD-PARTY.md):
+by the CLI and listed in [`../../third-party/THIRD-PARTY.md`](../../third-party/THIRD-PARTY.md):
 
 ```bash
 npx -y skills@latest add elayadesign/ai-design-skills   # design system generation

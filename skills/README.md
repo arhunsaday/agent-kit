@@ -2,14 +2,14 @@
 
 Skills **I own**. Third-party skills are not vendored here — they are installed
 and updated by the `skills` CLI and recorded in
-[`../../skills/THIRD-PARTY.md`](../../skills/THIRD-PARTY.md). That split is the
+[`../third-party/THIRD-PARTY.md`](../third-party/THIRD-PARTY.md). That split is the
 whole point: things I maintain live in git, things other people maintain get
 updated by a tool.
 
 ## Layout
 
 The folders below are for **browsing only**. Claude Code discovers skills one
-level deep, so `bootstrap.sh` flattens the category away on install:
+level deep, so `install.sh` flattens the category away on install:
 `skills/quality/verify-security/` becomes `~/.claude/skills/verify-security/`.
 Two skills may therefore never share a name, whatever folder they sit in.
 
@@ -47,7 +47,7 @@ when it is copied again — which a separate manifest would not.
 npx -y skills@latest init my-skill     # scaffolds SKILL.md
 ```
 
-Then move it into the right category, fill `source:`, and run `../../bootstrap.sh`.
+Then move it into the right category, fill `source:`, and run `../../install.sh`.
 
 Rules that keep a skill useful:
 

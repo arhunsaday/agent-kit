@@ -3,7 +3,7 @@
 # Blocks commits that contain secrets.
 #
 # Install (per clone — .git/hooks is not committed):
-#   cp templates/shared/agent/git-hooks/pre-commit-secrets.sh .git/hooks/pre-commit
+#   cp project-templates/shared/agent/git-hooks/pre-commit-secrets.sh .git/hooks/pre-commit
 #   chmod +x .git/hooks/pre-commit
 #
 # This is the last line of defence, not the only one. The real fix for a team is

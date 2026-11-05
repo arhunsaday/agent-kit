@@ -10,7 +10,7 @@ Verified 2026-09-20. Ordered by usefulness to this stack, not by stars.
 | [github/github-mcp-server](https://github.com/github/github-mcp-server) | Issues, PRs, Actions, code search. Official |
 | [microsoft/playwright-mcp](https://github.com/microsoft/playwright-mcp) | Drive a real browser — E2E, scraping, visual checks |
 | [googleapis/mcp-toolbox](https://github.com/googleapis/mcp-toolbox) | Databases, official |
-| [grafana/mcp-grafana](https://github.com/grafana/mcp-grafana) | Already in use — see [my servers](/docs/mcp/my-servers) |
+| [grafana/mcp-grafana](https://github.com/grafana/mcp-grafana) | Already in use — see [my servers](my-servers.md) |
 
 ## Worth adding for this stack
 

@@ -27,8 +27,8 @@ the copies drift.
 ## Generating the pointers
 
 ```bash
-templates/shared/agent/sync-agent-files.sh            # write them all
-templates/shared/agent/sync-agent-files.sh --check    # CI: fail if one drifted
+project-templates/shared/agent/sync-agent-files.sh            # write them all
+project-templates/shared/agent/sync-agent-files.sh --check    # CI: fail if one drifted
 ```
 
 Every pointer is generated from the single `AGENTS.md`, so adding a tool is one

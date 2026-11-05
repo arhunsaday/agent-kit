@@ -59,4 +59,4 @@ implementation is blocked until a failing test exists.
 ## Formatting and linting
 
 Handled by hooks, not by asking. `format-after-edit.sh` and `lint-after-edit.sh`
-run after every write — see [hooks](/docs/claude-code/hooks).
+run after every write — see [hooks](../claude-code/hooks.md).

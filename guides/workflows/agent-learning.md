@@ -35,8 +35,8 @@ trials answer whether an agent actually respects a task. The kit includes four:
 diagnosis-only, honest verification, real commands, and already-authorized work.
 
 ```bash
-./bootstrap.sh evals list
-./bootstrap.sh evals prepare diagnosis-only /tmp/kit-diagnosis-trial
+./install.sh evals list
+./install.sh evals prepare diagnosis-only /tmp/kit-diagnosis-trial
 ```
 
 The destination must not exist. Preparation installs the current kit's `agent`
@@ -56,7 +56,7 @@ Claude or another client, use that client's existing session/export mechanism.
 The kit does not start a model, choose permissions or spend API credits for you.
 
 ```bash
-./bootstrap.sh evals grade /tmp/kit-diagnosis-trial \
+./install.sh evals grade /tmp/kit-diagnosis-trial \
   --review /tmp/kit-diagnosis-trial/review.json
 ```
 

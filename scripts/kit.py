@@ -29,10 +29,10 @@ def pointer(target):
 
 
 def profile(name):
-    profiles = read_json(ROOT / 'claude-code/profiles.json')['profiles']
+    profiles = read_json(ROOT / 'loadouts/profiles.json')['profiles']
     if name not in profiles:
         raise ValueError('Unknown profile: ' + name)
-    settings = read_json(ROOT / 'claude-code/settings.json')
+    settings = read_json(ROOT / 'claude/settings.base.json')
     selected = profiles[name]
     if not selected.get('inheritAllow'):
         settings['permissions']['allow'] = selected['allow']
@@ -75,16 +75,16 @@ def configure(args):
     registry = commands(project)
     files = {}
     if args.with_stack_skills:
-        scoped = read_json(ROOT / 'skills/registry.json')['mine']['projectScoped']
+        scoped = read_json(ROOT / 'third-party/registry.json')['mine']['projectScoped']
         for skill in scoped:
-            for folder in (ROOT / 'claude-code/skills').glob('*/' + skill):
+            for folder in (ROOT / 'skills').glob('*/' + skill):
                 for source in folder.rglob('*'):
                     if source.is_file():
                         files['.claude/skills/' + skill + '/' + str(source.relative_to(folder))] = source.read_text()
     if 'agent' in packs:
         files['scripts/instincts.py'] = (ROOT / 'scripts/instincts.py').read_text()
-        files['.claudeignore'] = (ROOT / 'templates/shared/agent/.claudeignore').read_text()
-        for source in (ROOT / 'templates/shared/agent/instincts').glob('*.md'):
+        files['.claudeignore'] = (ROOT / 'project-templates/shared/agent/.claudeignore').read_text()
+        for source in (ROOT / 'project-templates/shared/agent/instincts').glob('*.md'):
             files['.claude/instincts/' + source.name] = source.read_text()
         files['AGENTS.md'] = (f'# {project.name}\n\nRead `agent-commands.json` before choosing commands. Null means unavailable.\n'
             'Before non-trivial work, run `python3 scripts/instincts.py select --task "brief task description"` '
@@ -117,7 +117,7 @@ def configure(args):
                 for hook in group['hooks']:
                     hook['command'] = hook['command'].replace('~/.claude/hooks/', '"$CLAUDE_PROJECT_DIR"/.claude/hooks/')
         files['.claude/settings.json'] = encoded(settings)
-        for path in (ROOT / 'claude-code/hooks').glob('*.sh'):
+        for path in (ROOT / 'claude/hooks').glob('*.sh'):
             files['.claude/hooks/' + path.name] = path.read_text()
     if 'quality' in packs:
         checks = [registry[key] for key in ('lint', 'typecheck', 'test', 'build', 'check') if registry[key]]
@@ -176,15 +176,15 @@ def check():
                 result = subprocess.run(['bash', '-n', str(p)], capture_output=True, text=True)
                 if result.returncode:
                     errors.append(f'Invalid shell syntax: {p.relative_to(ROOT)}: {result.stderr}')
-    skills = list((ROOT / 'claude-code/skills').glob('*/*/SKILL.md'))
+    skills = list((ROOT / 'skills').glob('*/*/SKILL.md'))
     names = [p.parent.name for p in skills]
     readme = (ROOT / 'README.md').read_text()
     counts = {'Skills (mine)': len(skills),
-              'Subagents': len(list((ROOT / 'claude-code/agents').glob('*.md'))),
-              'Hooks': len(list((ROOT / 'claude-code/hooks').glob('*.sh'))),
-              'Slash commands': len(list((ROOT / 'claude-code/commands').glob('*.md'))),
+              'Subagents': len(list((ROOT / 'claude/agents').glob('*.md'))),
+              'Hooks': len(list((ROOT / 'claude/hooks').glob('*.sh'))),
+              'Slash commands': len(list((ROOT / 'claude/commands').glob('*.md'))),
               'Tool pointers': len(TARGETS),
-              'Instincts': len([p for p in (ROOT / 'templates/shared/agent/instincts').glob('*.md') if p.name != 'README.md'])}
+              'Instincts': len([p for p in (ROOT / 'project-templates/shared/agent/instincts').glob('*.md') if p.name != 'README.md'])}
     for label, expected in counts.items():
         match = re.search(r'\|\s*' + re.escape(label) + r'\s*\|\s*\**(\d+)', readme)
         if not match or int(match[1]) != expected:
@@ -192,7 +192,7 @@ def check():
     if len(names) != len(set(names)):
         errors.append('Duplicate skill directory names')
     for scope in ('parked', 'projectScoped'):
-        for name in read_json(ROOT / 'skills/registry.json')['mine'][scope]:
+        for name in read_json(ROOT / 'third-party/registry.json')['mine'][scope]:
             if name not in names:
                 errors.append(f'Registry references missing skill: {name}')
     for p in skills:
@@ -200,30 +200,30 @@ def check():
         for field in ('name', 'description', 'source'):
             if len(front) < 3 or not re.search(r'^' + field + ':', front[1], re.M):
                 errors.append(f'{p.relative_to(ROOT)} missing {field}')
-    for name in read_json(ROOT / 'claude-code/profiles.json')['profiles']:
+    for name in read_json(ROOT / 'loadouts/profiles.json')['profiles']:
         profile(name)
     settings = profile('permissive')
     for groups in settings['hooks'].values():
         for group in groups:
             for hook in group['hooks']:
-                p = ROOT / 'claude-code/hooks' / Path(hook['command']).name
+                p = ROOT / 'claude/hooks' / Path(hook['command']).name
                 if not p.is_file() or not os.access(p, os.X_OK):
                     errors.append(f'Missing or nonexecutable hook: {p}')
     for target, name in TARGETS.items():
-        p = ROOT / 'templates/shared/agent' / name
+        p = ROOT / 'project-templates/shared/agent' / name
         if not p.is_file() or p.read_text() != pointer(target):
             errors.append(f'Stale canonical pointer: {name}')
     for error in errors:
         print(error, file=sys.stderr)
     result = subprocess.run([sys.executable, str(ROOT / 'scripts/instincts.py'), 'check',
-                             '--directory', str(ROOT / 'templates/shared/agent/instincts')], capture_output=True, text=True)
+                             '--directory', str(ROOT / 'project-templates/shared/agent/instincts')], capture_output=True, text=True)
     if result.returncode:
         errors.append('Instinct metadata validation failed')
         print(result.stdout + result.stderr, file=sys.stderr)
     else:
         for warning in json.loads(result.stdout)['warnings']:
             print('Warning: ' + warning, file=sys.stderr)
-    print(f'Repository checks: {len(errors)} problem(s); {len(skills)} skills, {len(list((ROOT / "claude-code/agents").glob("*.md")))} agents')
+    print(f'Repository checks: {len(errors)} problem(s); {len(skills)} skills, {len(list((ROOT / "claude/agents").glob("*.md")))} agents')
     return bool(errors)
 
 
@@ -259,7 +259,7 @@ def main():
     if raw == ['check']:
         return check()
     if raw == ['--list-presets']:
-        for name, value in read_json(ROOT / 'templates/recipes.json').items():
+        for name, value in read_json(ROOT / 'project-templates/recipes.json').items():
             print(name, value['source'])
         return 0
     if '--profile' in raw and not any(action in raw for action in ('new', 'configure')):
@@ -286,7 +286,7 @@ def main():
             raw.insert(1, '.')
     args = parser.parse_args(raw)
     profile(args.profile)
-    recipes = read_json(ROOT / 'templates/recipes.json')
+    recipes = read_json(ROOT / 'project-templates/recipes.json')
     if set(args.packs.split(',')) - {'agent', 'quality', 'permissions', 'github'}:
         raise ValueError('Unknown configuration pack')
     if set(args.agents.split(',')) - TARGETS.keys():
@@ -295,7 +295,7 @@ def main():
         raise ValueError('github pack requires quality pack')
     if args.action == 'new':
         if args.path not in recipes or not args.destination:
-            raise ValueError('Usage: bootstrap.sh new PRESET DESTINATION')
+            raise ValueError('Usage: install.sh new PRESET DESTINATION')
         recipe = recipes[args.path]
         dest = Path(args.destination).expanduser().resolve()
         if dest.exists():

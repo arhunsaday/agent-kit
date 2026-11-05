@@ -48,5 +48,5 @@ performance across coding models — worth checking before assuming the
 biggest model is the right default.
 
 For your own usage: the statusline in this kit shows live context use, and the
-rule from [fundamentals](/docs/claude-code/fundamentals) applies — Sonnet for ~80%,
+rule from [fundamentals](../../claude-code/fundamentals.md) applies — Sonnet for ~80%,
 Opus when it must think.

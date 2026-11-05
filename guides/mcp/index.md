@@ -74,9 +74,9 @@ text aimed at the agent. Only install servers you have reason to trust.
 
 ## Pages
 
-- [My servers](/docs/mcp/my-servers) — what I run and how
-- [Recommended](/docs/mcp/recommended) — worth adding
-- [Context & memory](/docs/mcp/context-and-memory) — Dual Graph / GrapeRoot, ProjectMem
+- [My servers](my-servers.md) — what I run and how
+- [Recommended](recommended.md) — worth adding
+- [Context & memory](context-and-memory.md) — Dual Graph / GrapeRoot, ProjectMem
 
 ## Reference
 

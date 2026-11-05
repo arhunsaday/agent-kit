@@ -2,9 +2,9 @@
 title: "Install"
 ---
 ```bash
-git clone https://github.com/arhunsaday/preflight ~/Repos/preflight
-cd ~/Repos/preflight
-./bootstrap.sh
+git clone https://github.com/arhunsaday/agent-kit ~/Repos/agent-kit
+cd ~/Repos/agent-kit
+./install.sh
 ```
 
 That symlinks everything into `~/.claude/`. Edit a file in the repo and the
@@ -14,11 +14,11 @@ machine that has run it.
 ## Flags
 
 ```bash
-./bootstrap.sh --dry-run          # show what would happen, write nothing
-./bootstrap.sh --force            # back up conflicting files, then link
-./bootstrap.sh --unlink           # remove only the links this script made
-./bootstrap.sh --project ~/repo   # copy the agent drop-in into a project
-./bootstrap.sh --help
+./install.sh --dry-run          # show what would happen, write nothing
+./install.sh --force            # back up conflicting files, then link
+./install.sh --unlink           # remove only the links this script made
+./install.sh --project ~/repo   # copy the agent drop-in into a project
+./install.sh --help
 ```
 
 ## What it refuses to do
@@ -49,4 +49,4 @@ Restart Claude Code, or start a new session. Then:
 Check the statusline is live — you should see
 `📁 repo 🌿 branch | 🤖 model | ±diff | ████░░ 23%` at the bottom.
 If not, your own `settings.json` needs the `statusLine` block from
-[`claude-code/settings.json`](/docs/setup/what-lands-where#settingsjson).
+[`claude/settings.base.json`](what-lands-where.md#settingsjson).

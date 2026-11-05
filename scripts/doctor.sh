@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
 #
-# preflight doctor — what is installed, what is wired, what is missing.
+# agent-kit doctor — what is installed, what is wired, what is missing.
 #
-#   ./doctor.sh              full report
-#   ./doctor.sh --quiet      only problems (exit 1 if any)
-#   ./doctor.sh --skills     skill inventory only
-#   ./doctor.sh --repo       repository drift checks (also used in CI)
+#   ./scripts/doctor.sh              full report
+#   ./scripts/doctor.sh --quiet      only problems (exit 1 if any)
+#   ./scripts/doctor.sh --skills     skill inventory only
+#   ./scripts/doctor.sh --repo       repository drift checks (also used in CI)
 #
 # It reports; it never changes anything.
 #
 set -uo pipefail
 
-KIT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+KIT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 if [ "${1:-}" = "--repo" ]; then
   exec python3 "$KIT_ROOT/scripts/kit.py" check
 fi
@@ -70,7 +70,7 @@ bad() {
 check_skills() {
 	sec "Skills — mine"
 	local total=0
-	for d in "$KIT_ROOT"/claude-code/skills/*/; do
+	for d in "$KIT_ROOT"/skills/*/; do
 		[ -d "$d" ] || continue
 		local cat n
 		cat="$(basename "$d")"
@@ -79,11 +79,11 @@ check_skills() {
 		total=$((total + n))
 		info "$(printf '%-16s %2s' "$cat" "$n")"
 	done
-	ok "$total skills in $KIT_ROOT/claude-code/skills"
+	ok "$total skills in $KIT_ROOT/skills"
 
 	# every skill must declare name, description, source
 	local missing=0
-	for f in "$KIT_ROOT"/claude-code/skills/*/*/SKILL.md; do
+	for f in "$KIT_ROOT"/skills/*/*/SKILL.md; do
 		[ -f "$f" ] || continue
 		for key in name description source; do
 			head -40 "$f" | grep -q "^$key:" || {
@@ -96,12 +96,12 @@ check_skills() {
 
 	# install flattens categories, so names must be unique
 	local dupes
-	dupes=$(basename -a $(dirname "$KIT_ROOT"/claude-code/skills/*/*/SKILL.md) 2>/dev/null | sort | uniq -d)
+	dupes=$(basename -a $(dirname "$KIT_ROOT"/skills/*/*/SKILL.md) 2>/dev/null | sort | uniq -d)
 	[ -z "$dupes" ] && ok "no duplicate names" || bad "duplicate names (install flattens categories): $dupes"
 
 	sec "Skills — registry"
-	if [ -f "$KIT_ROOT/skills/registry.json" ]; then
-		python3 - "$KIT_ROOT/skills/registry.json" <<'PY'
+	if [ -f "$KIT_ROOT/third-party/registry.json" ]; then
+		python3 - "$KIT_ROOT/third-party/registry.json" <<'PY'
 import json, sys, pathlib, re
 reg = json.load(open(sys.argv[1]))
 pm = reg.get("mine", {}).get("parked", {})
@@ -118,10 +118,10 @@ for d in live.iterdir() if live.exists() else []:
 print(f"  \u00b7 {len(pm)} of mine parked, {len(pt)} third-party parked")
 print(f"  \u00b7 {n} active -> ~{tot//4} description tokens loaded every session")
 if tot // 4 > 12000:
-    print("  ! over ~12k tokens of descriptions — park more in skills/registry.json")
+    print("  ! over ~12k tokens of descriptions — park more in third-party/registry.json")
 PY
 	else
-		warn "no skills/registry.json — nothing controls which skills load"
+		warn "no third-party/registry.json — nothing controls which skills load"
 	fi
 
 	sec "Skills — third-party"
@@ -129,7 +129,7 @@ PY
 		ok "$(ls "$STORE" | wc -l | tr -d ' ') skills in the shared store ($STORE)"
 		info "read by $(find "$HOME" -maxdepth 3 -type d -name skills -path '*/.*' 2>/dev/null | wc -l | tr -d ' ') agent directories"
 	else
-		warn "no shared store — run skills/install-third-party.sh"
+		warn "no shared store — run third-party/install-third-party.sh"
 	fi
 
 	sec "Skills — as Claude Code sees them"
@@ -143,12 +143,12 @@ PY
 			continue
 		}
 		case "$(readlink "$l" 2>/dev/null)" in
-		*preflight*) mine=$((mine + 1)) ;;
+		"$KIT_ROOT"/*) mine=$((mine + 1)) ;;
 		*agents/skills*) theirs=$((theirs + 1)) ;;
 		esac
 	done
 	ok "$links entries — $mine mine, $theirs third-party"
-	[ "$broken" -eq 0 ] || bad "$broken broken symlink(s) — re-run ./bootstrap.sh"
+	[ "$broken" -eq 0 ] || bad "$broken broken symlink(s) — re-run ./install.sh"
 }
 
 # ── Hooks ────────────────────────────────────────────────────────────────────
@@ -165,7 +165,7 @@ print('\n'.join(h.get('command','').split('/')[-1]
       for v in d.get('hooks',{}).values() for m in v for h in m.get('hooks',[])))" 2>/dev/null)
 	fi
 
-	for f in "$KIT_ROOT"/claude-code/hooks/*.sh; do
+	for f in "$KIT_ROOT"/claude/hooks/*.sh; do
 		[ -f "$f" ] || continue
 		local n
 		n="$(basename "$f")"
@@ -180,7 +180,7 @@ print('\n'.join(h.get('command','').split('/')[-1]
 		head -20 "$f" | grep -qi 'OFF BY DEFAULT' && optional="yes"
 
 		if [ "$linked" = "no" ]; then
-			bad "$(printf '%-26s' "$n") not linked — run ./bootstrap.sh"
+			bad "$(printf '%-26s' "$n") not linked — run ./install.sh"
 		elif [ "$exec_" = "no" ]; then
 			bad "$(printf '%-26s' "$n") not executable"
 		elif [ "$on" = "no" ] && [ "$optional" = "yes" ]; then
@@ -204,15 +204,15 @@ print('\n'.join(h.get('command','').split('/')[-1]
 check_assets() {
 	sec "Commands, subagents, statusline"
 	local n
-	n=$(ls "$KIT_ROOT"/claude-code/commands/*.md 2>/dev/null | wc -l | tr -d ' ')
+	n=$(ls "$KIT_ROOT"/claude/commands/*.md 2>/dev/null | wc -l | tr -d ' ')
 	[ "$n" -gt 0 ] && ok "$n slash commands" || warn "no slash commands"
-	for f in "$KIT_ROOT"/claude-code/commands/*.md; do
+	for f in "$KIT_ROOT"/claude/commands/*.md; do
 		[ -f "$f" ] && { [ -L "$CLAUDE_HOME/commands/$(basename "$f")" ] || bad "not linked: commands/$(basename "$f")"; }
 	done
 
-	n=$(ls "$KIT_ROOT"/claude-code/agents/*.md 2>/dev/null | wc -l | tr -d ' ')
+	n=$(ls "$KIT_ROOT"/claude/agents/*.md 2>/dev/null | wc -l | tr -d ' ')
 	[ "$n" -gt 0 ] && ok "$n subagents" || warn "no subagents"
-	for f in "$KIT_ROOT"/claude-code/agents/*.md; do
+	for f in "$KIT_ROOT"/claude/agents/*.md; do
 		[ -f "$f" ] || continue
 		[ -L "$CLAUDE_HOME/agents/$(basename "$f")" ] || bad "not linked: agents/$(basename "$f")"
 		grep -qi '^model:.*fable' "$f" && bad "$(basename "$f") uses Fable — CLAUDE.md forbids it"
@@ -274,16 +274,16 @@ print(len(d.get('mcpServers',{})))" 2>/dev/null)
 			found=1
 		}
 	done
-	[ "$found" -eq 0 ] && info "no MCP servers found (template: claude-code/mcp.json)"
+	[ "$found" -eq 0 ] && info "no MCP servers found (template: claude/mcp.json)"
 }
 
 # ── Gaps ─────────────────────────────────────────────────────────────────────
 check_gaps() {
 	sec "Gaps"
 	local n
-	n=$(ls -d "$KIT_ROOT"/claude-code/skills/ops/*/ 2>/dev/null | wc -l | tr -d ' ')
+	n=$(ls -d "$KIT_ROOT"/skills/ops/*/ 2>/dev/null | wc -l | tr -d ' ')
 	[ "$n" -lt 3 ] && info "ops/: only $n skill(s) — see BagelHole/DevOps-Security-Agent-Skills"
-	n=$(ls "$KIT_ROOT"/claude-code/agents/*.md 2>/dev/null | wc -l | tr -d ' ')
+	n=$(ls "$KIT_ROOT"/claude/agents/*.md 2>/dev/null | wc -l | tr -d ' ')
 	[ "$n" -lt 6 ] && info "subagents: only $n — see wshobson/agents"
 	info "instincts: metadata validated by repository checks; no minimum rule count"
 	find "$KIT_ROOT" -type d -empty -not -path '*/.git/*' -not -path '*/node_modules/*' 2>/dev/null |
@@ -291,7 +291,7 @@ check_gaps() {
 }
 
 # ── Run ──────────────────────────────────────────────────────────────────────
-[ "$QUIET" -eq 1 ] || printf '%spreflight doctor%s  %s%s%s\n' "$B" "$O" "$D" "$KIT_ROOT" "$O"
+[ "$QUIET" -eq 1 ] || printf '%sagent-kit doctor%s  %s%s%s\n' "$B" "$O" "$D" "$KIT_ROOT" "$O"
 
 if [ "$ONLY" = "skills" ]; then
 	check_skills

@@ -51,7 +51,7 @@ class InstallerTests(unittest.TestCase):
             self.assertEqual(list(Path(directory).iterdir()), [])
 
     def test_default_preserves_permissions(self):
-        baseline = kit.read_json(kit.ROOT / 'claude-code/settings.json')['permissions']
+        baseline = kit.read_json(kit.ROOT / 'claude/settings.base.json')['permissions']
         actual = kit.profile('permissive')['permissions']
         self.assertEqual(actual['allow'], baseline['allow'])
         self.assertEqual(actual['deny'], baseline['deny'])
@@ -107,7 +107,7 @@ class InstallerTests(unittest.TestCase):
 
     def test_flag_order_project_alias(self):
         with tempfile.TemporaryDirectory() as directory:
-            result = subprocess.run(['bash', str(kit.ROOT / 'bootstrap.sh'), '--dry-run', '--project', directory], capture_output=True)
+            result = subprocess.run(['bash', str(kit.ROOT / 'install.sh'), '--dry-run', '--project', directory], capture_output=True)
             self.assertEqual(result.returncode, 0, result.stderr)
             self.assertEqual(list(Path(directory).iterdir()), [])
 

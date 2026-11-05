@@ -7,8 +7,8 @@ Tailwind, TanStack Query/Router.
 > (enterprise), say so and this becomes a different template.
 
 ```bash
-~/Repos/preflight/bootstrap.sh --project .   # the generic drop-in first
-cp templates/react-spa/AGENTS.section.md      # then paste the section below
+~/Repos/agent-kit/install.sh --project .   # the generic drop-in first
+cp project-templates/react-spa/AGENTS.section.md      # then paste the section below
 ```
 
 ## What to add to the project's AGENTS.md

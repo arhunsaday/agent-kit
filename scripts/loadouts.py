@@ -7,7 +7,7 @@ import re
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCE = ROOT / 'claude-code/loadouts.json'
+SOURCE = ROOT / 'loadouts/loadouts.json'
 KINDS = ('skills', 'subagents', 'hooks', 'mcp', 'instincts', 'workflows')
 
 
@@ -43,13 +43,13 @@ def resolve(data, names):
 
 def vendored(kind):
     if kind == 'skills':
-        return {p.parent.name for p in (ROOT / 'claude-code/skills').glob('*/*/SKILL.md')}
+        return {p.parent.name for p in (ROOT / 'skills').glob('*/*/SKILL.md')}
     if kind == 'subagents':
-        return {p.stem for p in (ROOT / 'claude-code/agents').glob('*.md')}
+        return {p.stem for p in (ROOT / 'claude/agents').glob('*.md')}
     if kind == 'hooks':
-        return {p.stem for p in (ROOT / 'claude-code/hooks').glob('*.sh')}
+        return {p.stem for p in (ROOT / 'claude/hooks').glob('*.sh')}
     if kind == 'instincts':
-        return {p.stem for p in (ROOT / 'templates/shared/agent/instincts').glob('*.md')} - {'README'}
+        return {p.stem for p in (ROOT / 'project-templates/shared/agent/instincts').glob('*.md')} - {'README'}
     return None  # mcp and workflows are not files in this repo
 
 
@@ -64,7 +64,7 @@ def known(kind):
 
 def installer_repos(source=None):
     """Repositories install-third-party.sh installs skills from."""
-    text = (source or ROOT / 'skills/install-third-party.sh').read_text()
+    text = (source or ROOT / 'third-party/install-third-party.sh').read_text()
     block = text.partition('REPOS=(')[2].partition(')')[0]
     repos = set()
     for line in block.splitlines():

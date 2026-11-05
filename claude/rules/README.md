@@ -8,9 +8,9 @@ lives somewhere more specific:
 
 | What you might put here | Where it actually goes |
 | --- | --- |
-| How the agent should work with me | `claude-code/CLAUDE.md` |
-| A rule triggered by a situation | `templates/shared/agent/instincts/` |
-| A rule that must hold deterministically | `claude-code/hooks/` |
+| How the agent should work with me | `claude/CLAUDE.md` |
+| A rule triggered by a situation | `project-templates/shared/agent/instincts/` |
+| A rule that must hold deterministically | `claude/hooks/` |
 | Language-level code conventions | `standards/` |
 | Project-specific conventions | that project's `AGENTS.md` |
 

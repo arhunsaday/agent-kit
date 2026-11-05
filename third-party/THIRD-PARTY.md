@@ -16,11 +16,11 @@ The split:
 
 |                       | Where                                           | Updated by          |
 | --------------------- | ----------------------------------------------- | ------------------- |
-| **Skills I own**      | [`claude-code/skills/`](../claude-code/skills/) | me, in git          |
+| **Skills I own**      | [`skills/`](../skills/) | me, in git          |
 | **Skills others own** | `~/.claude/skills/` via the CLI                 | `npx skills update` |
 
 Never edit an installed third-party skill in place — the next update silently
-reverts it. Fork it into `claude-code/skills/` instead and set `source: upstream:`
+reverts it. Fork it into `skills/` instead and set `source: upstream:`
 to where it came from.
 
 ## The CLI
@@ -56,8 +56,8 @@ them — the single best thing about this CLI.
 > [`install-third-party.sh`](install-third-party.sh), not a lock file.
 
 ```bash
-./skills/install-third-party.sh          # reinstall everything on a new machine
-./skills/install-third-party.sh --list   # see what each repo holds first
+./third-party/install-third-party.sh          # reinstall everything on a new machine
+./third-party/install-third-party.sh --list   # see what each repo holds first
 npx -y skills@latest update -y           # or /skills-sync
 ```
 
@@ -99,7 +99,7 @@ npx -y skills@latest update -y           # or /skills-sync
 </details>
 
 None are copied into this repo. To change one, fork it into
-`claude-code/skills/` — an edit in place is reverted by the next update.
+`skills/` — an edit in place is reverted by the next update.
 
 ## Recommended, not yet installed
 

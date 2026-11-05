@@ -6,8 +6,8 @@ The difference from the rest of the kit:
 
 | | Scope | Enforced by |
 | --- | --- | --- |
-| `claude-code/CLAUDE.md` | how the agent works with me, everywhere | the model, per session |
-| `templates/.../instincts/` | one rule, one trigger, per project | the model, on match |
+| `claude/CLAUDE.md` | how the agent works with me, everywhere | the model, per session |
+| `project-templates/.../instincts/` | one rule, one trigger, per project | the model, on match |
 | **`standards/`** | how *code* should look in a language | lint config + review |
 
 A standard belongs here when it is true across projects and expressible as a

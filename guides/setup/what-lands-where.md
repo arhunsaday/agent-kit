@@ -2,27 +2,27 @@
 title: "What lands where"
 ---
 ```
-preflight/                          ~/.claude/
-├── claude-code/
+agent-kit/                          ~/.claude/
+├── claude/
 │   ├── CLAUDE.md          ────────→ CLAUDE.md          (global instructions)
-│   ├── settings.json      ──✗──────  settings.json      (never overwritten — merge by hand)
-│   ├── skills/<cat>/<n>/  ────────→ skills/<n>/         (category flattened away)
+│   ├── settings.base.json ──✗──────  settings.json      (never overwritten — merge by hand)
 │   ├── hooks/*.sh         ────────→ hooks/              (+ chmod +x)
 │   ├── commands/*.md      ────────→ commands/           (slash commands)
 │   ├── agents/*.md        ────────→ agents/             (subagents)
 │   └── statusline/*.sh    ────────→ statusline/
-├── templates/shared/agent/ ──────→  (copied into a project by --project)
-├── skills/THIRD-PARTY.md            (not installed — a manifest of what the CLI manages)
-└── docs/                            (this site)
+├── skills/<cat>/<n>/      ────────→ skills/<n>/         (category flattened away)
+├── project-templates/shared/agent/  (copied into a project by --project)
+├── third-party/THIRD-PARTY.md       (not installed — a manifest of what the CLI manages)
+└── guides/                          (these pages)
 ```
 
 ## Skills: organised here, flat there
 
 Skills live under a category folder in the repo for browsing, but Claude Code
-discovers them **one level deep**. `bootstrap.sh` flattens on install:
+discovers them **one level deep**. `install.sh` flattens on install:
 
 ```
-claude-code/skills/quality/verify-security/  →  ~/.claude/skills/verify-security/
+skills/quality/verify-security/  →  ~/.claude/skills/verify-security/
 ```
 
 Consequence: **two skills can never share a name**, whatever folders they sit in.
@@ -37,7 +37,7 @@ statusline, merge these blocks into `~/.claude/settings.json` yourself:
 - `permissions.deny` → `.env`, `*.pem`, `*.key`, `credentials.json`
 
 ```bash
-diff ~/.claude/settings.json ~/Repos/preflight/claude-code/settings.json
+diff ~/.claude/settings.json ~/Repos/agent-kit/claude/settings.base.json
 ```
 
 The `permissions.deny` block is worth merging first — it is the one that stops
@@ -54,4 +54,4 @@ Claude Code reads configuration from three places, most specific winning:
 | **Project** | `<repo>/.claude/` | project skills, project hooks, per-repo permissions |
 
 A slow test suite is the usual reason to put a hook at project scope instead of
-user scope — see [hooks](/docs/claude-code/hooks).
+user scope — see [hooks](../claude-code/hooks.md).

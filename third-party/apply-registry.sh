@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Applies skills/registry.json: parks or activates third-party skills by
+# Applies third-party/registry.json: parks or activates third-party skills by
 # adding/removing their symlinks in the agent directories.
 #
 #   ./apply-registry.sh              apply
@@ -11,12 +11,12 @@
 # symlinks that make agents see it are removed. Re-activating is instant and
 # works offline.
 #
-# Skills I own are handled by bootstrap.sh, which reads the same file.
+# Skills I own are handled by install.sh, which reads the same file.
 #
 set -uo pipefail
 
 KIT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-REGISTRY="$KIT_ROOT/skills/registry.json"
+REGISTRY="$KIT_ROOT/third-party/registry.json"
 STORE="$HOME/.agents/skills"
 
 MODE="apply"
@@ -113,5 +113,5 @@ printf '%sacross %s agent directories%s\n' "$D" "$(printf '%s\n' "$agent_dirs" |
 
 if [ "$MODE" != "dry" ]; then
 	printf '\n%sRestart Claude Code to pick up the change.%s\n' "$D" "$O"
-	printf '%sEdit skills/registry.json and re-run to adjust.%s\n' "$D" "$O"
+	printf '%sEdit third-party/registry.json and re-run to adjust.%s\n' "$D" "$O"
 fi

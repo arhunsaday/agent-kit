@@ -22,13 +22,13 @@ class LoadoutCheckTests(unittest.TestCase):
         self.directory = tempfile.TemporaryDirectory()
         self.addCleanup(self.directory.cleanup)
         root = Path(self.directory.name)
-        (root / 'claude-code/skills/local/vendored').mkdir(parents=True)
-        (root / 'claude-code/skills/local/vendored/SKILL.md').write_text('---\nname: vendored\n---\n')
-        (root / 'skills').mkdir(parents=True)
-        (root / 'skills/install-third-party.sh').write_text(
+        (root / 'skills/local/vendored').mkdir(parents=True)
+        (root / 'skills/local/vendored/SKILL.md').write_text('---\nname: vendored\n---\n')
+        (root / 'third-party').mkdir(parents=True)
+        (root / 'third-party/install-third-party.sh').write_text(
             'REPOS=(\n  owner/installed   # a comment\n)\n')
-        for extra in ('claude-code/agents', 'claude-code/hooks',
-                      'templates/shared/agent/instincts'):
+        for extra in ('claude/agents', 'claude/hooks',
+                      'project-templates/shared/agent/instincts'):
             (root / extra).mkdir(parents=True)
         self.root = root
         self.output = patch('builtins.print')
@@ -71,7 +71,7 @@ class LoadoutCheckTests(unittest.TestCase):
         self.assertEqual(1, self.check(payload))
 
     def test_installer_repositories_come_from_the_script(self):
-        script = self.root / 'skills/install-third-party.sh'
+        script = self.root / 'third-party/install-third-party.sh'
         script.write_text('REPOS=(\n  a/one  # note\n  b/two\n)\n'
                           'npx -y skills@latest add c/three -g\n')
         self.assertEqual({'a/one', 'b/two', 'c/three'},

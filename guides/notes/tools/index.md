@@ -15,7 +15,7 @@ Things outside Claude Code itself. Verified 2026-09-20.
 
 | Tool | What it does |
 | --- | --- |
-| [skills.sh](https://www.skills.sh/) + `npx skills` | The registry and CLI. Install, update, search skills across GitHub. See [skills](/docs/claude-code/skills) |
+| [skills.sh](https://www.skills.sh/) + `npx skills` | The registry and CLI. Install, update, search skills across GitHub. See [skills](../../claude-code/skills.md) |
 | [vercel-labs/find-skills](https://www.skills.sh/vercel-labs/skills/find-skills) | A skill that finds skills — `npx skills find` from inside a session |
 | `npx claude-doctor` | Analyses your own session history for friction patterns: edit-thrashing, frustration, excessive exploration. **Abandoned** (v0.0.3, April) — run it once for the report, do not adopt it |
 
@@ -27,7 +27,7 @@ folded into this kit's.
 
 | Tool | What it does |
 | --- | --- |
-| [RTK](/docs/tools/rtk) | CLI proxy compressing command output before the agent reads it. 60–90% on bash output, 99% on test runs. **[Full page](/docs/tools/rtk)** |
+| [RTK](rtk.md) | CLI proxy compressing command output before the agent reads it. 60–90% on bash output, 99% on test runs. **[Full page](rtk.md)** |
 | [headroom](https://github.com/headroomlabs-ai/headroom) | Same idea as an MCP server: compresses tool output, logs and RAG chunks |
 | [snip](https://github.com/edouard-claude/snip) | CLI proxy, declarative rules, 60–90% |
 

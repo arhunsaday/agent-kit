@@ -70,7 +70,7 @@ Expect `exit=2` plus a message on stderr.
 
 Claude Code hooks run inside the agent loop. **Git** hooks run on commit/push
 and catch what the agent already wrote. Use both — see
-[the devops workflow](/docs/workflows/devops#git-hooks).
+[the devops workflow](../workflows/devops.md#git-hooks).
 
 ## Reference
 

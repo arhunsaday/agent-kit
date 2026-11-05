@@ -15,12 +15,12 @@ the symlinks that make agents see it are removed. Re-activating is instant and
 works offline.
 
 ```bash
-./skills/apply-registry.sh --status     # what is active, what is parked, and why
-./skills/apply-registry.sh --dry-run    # what would change
-./skills/apply-registry.sh              # apply
+./third-party/apply-registry.sh --status     # what is active, what is parked, and why
+./third-party/apply-registry.sh --dry-run    # what would change
+./third-party/apply-registry.sh              # apply
 ```
 
-`bootstrap.sh` reads the same file for the skills in `claude-code/skills/`, so
+`install.sh` reads the same file for the skills in `skills/`, so
 one file decides both.
 
 ## Why park anything
@@ -45,7 +45,7 @@ longer all claim "interview the user to stress-test a plan".
 Open [`registry.json`](registry.json), move a name out of `parked`, re-run:
 
 ```bash
-./skills/apply-registry.sh && ./bootstrap.sh
+./third-party/apply-registry.sh && ./install.sh
 ```
 
 Each parked entry carries the reason it was parked, so the list reads as a

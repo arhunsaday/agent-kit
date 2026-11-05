@@ -98,8 +98,8 @@ inspect them before committing. Existing IDs are never overwritten by `propose`.
 `accept` is the explicit promotion step, not an automatic follow-up to capture.
 Retirement preserves the file; a revised retired lesson needs a new ID.
 
-For shared kit rules, use `./bootstrap.sh instincts COMMAND --directory
-templates/shared/agent/instincts` from the kit root. For project rules, use the
+For shared kit rules, use `./install.sh instincts COMMAND --directory
+project-templates/shared/agent/instincts` from the kit root. For project rules, use the
 copied script above. Promoting a project lesson to the kit is a separate manual
 review: remove project-specific assumptions and preserve attribution first.
 

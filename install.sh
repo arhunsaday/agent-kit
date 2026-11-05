@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 #
-# preflight bootstrap — links this kit's Claude Code assets into ~/.claude
+# agent-kit install (transitional) — links this kit's Claude Code assets into ~/.claude.
+# Preflight takes these targets over one family at a time (`preflight source add`
+# + `preflight apply`); this script goes away once it owns them all.
 #
 # Symlinks, not copies: edit a file here and the change is live immediately,
 # and `git pull` updates every machine that ran this.
@@ -12,15 +14,15 @@
 #   - idempotent; re-run it any time
 #
 # Usage:
-#   ./bootstrap.sh                    install into ~/.claude
-#   ./bootstrap.sh --dry-run          show what would happen, change nothing
-#   ./bootstrap.sh --force            back up conflicting files, then link
-#   ./bootstrap.sh --unlink           remove links this script created
-#   ./bootstrap.sh --project [DIR]    copy the agent drop-in into a repo
-#   ./bootstrap.sh new PRESET DIR    official starter + configuration packs
-#   ./bootstrap.sh --list-presets    list official starter recipes
-#   ./bootstrap.sh --profile NAME    print global profile JSON (no writes)
-#   ./bootstrap.sh --project [DIR] --with-stack-skills
+#   ./install.sh                    install into ~/.claude
+#   ./install.sh --dry-run          show what would happen, change nothing
+#   ./install.sh --force            back up conflicting files, then link
+#   ./install.sh --unlink           remove links this script created
+#   ./install.sh --project [DIR]    copy the agent drop-in into a repo
+#   ./install.sh new PRESET DIR    official starter + configuration packs
+#   ./install.sh --list-presets    list official starter recipes
+#   ./install.sh --profile NAME    print global profile JSON (no writes)
+#   ./install.sh --project [DIR] --with-stack-skills
 #                                     also copy every project-scoped skill
 #
 # --project copies rather than links: AGENTS.md, .claudeignore and friends
@@ -36,7 +38,7 @@ for arg in "$@"; do
   esac
 done
 CLAUDE_HOME="${CLAUDE_HOME:-$HOME/.claude}"
-BACKUP_DIR="$CLAUDE_HOME/backups/preflight-$(date +%Y%m%d-%H%M%S)"
+BACKUP_DIR="$CLAUDE_HOME/backups/agent-kit-$(date +%Y%m%d-%H%M%S)"
 
 DRY_RUN=0
 FORCE=0
@@ -151,22 +153,22 @@ install_skills() {
   # Skills live in the kit under <category>/<skill>/SKILL.md for browsing, but
   # Claude Code discovers them one level deep. Install flattens the category
   # away: ~/.claude/skills/<skill> regardless of which folder it sits in here.
-  # skills/registry.json decides which of my own skills are active. Anything
+  # third-party/registry.json decides which of my own skills are active. Anything
   # absent from it defaults to active, so a new skill works without editing it.
   parked_mine=""
   scoped_mine=""
-  if [ -f "$KIT_ROOT/skills/registry.json" ]; then
+  if [ -f "$KIT_ROOT/third-party/registry.json" ]; then
     parked_mine=$(python3 -c "
 import json
-d = json.load(open('$KIT_ROOT/skills/registry.json'))
+d = json.load(open('$KIT_ROOT/third-party/registry.json'))
 print('\n'.join(d.get('mine', {}).get('parked', {}).keys()))" 2>/dev/null)
     scoped_mine=$(python3 -c "
 import json
-d = json.load(open('$KIT_ROOT/skills/registry.json'))
+d = json.load(open('$KIT_ROOT/third-party/registry.json'))
 print('\n'.join(d.get('mine', {}).get('projectScoped', {}).keys()))" 2>/dev/null)
   fi
 
-  for f in "$KIT_ROOT"/claude-code/skills/*/*/SKILL.md; do
+  for f in "$KIT_ROOT"/skills/*/*/SKILL.md; do
     [ -f "$f" ] || continue
     dir="$(dirname "$f")"
     name="$(basename "$dir")"
@@ -195,7 +197,7 @@ print('\n'.join(d.get('mine', {}).get('projectScoped', {}).keys()))" 2>/dev/null
 install_commands() {
   head_ "slash commands -> $CLAUDE_HOME/commands/"
   found=0
-  for f in "$KIT_ROOT"/claude-code/commands/*.md; do
+  for f in "$KIT_ROOT"/claude/commands/*.md; do
     [ -f "$f" ] || continue
     name="$(basename "$f")"; found=1
     if [ "$UNLINK" -eq 1 ]; then
@@ -210,7 +212,7 @@ install_commands() {
 install_agents() {
   head_ "subagents -> $CLAUDE_HOME/agents/"
   found=0
-  for f in "$KIT_ROOT"/claude-code/agents/*.md; do
+  for f in "$KIT_ROOT"/claude/agents/*.md; do
     [ -f "$f" ] || continue
     name="$(basename "$f")"; found=1
     if [ "$UNLINK" -eq 1 ]; then
@@ -225,7 +227,7 @@ install_agents() {
 install_statusline() {
   head_ "statusline -> $CLAUDE_HOME/statusline/"
   found=0
-  for f in "$KIT_ROOT"/claude-code/statusline/*.sh; do
+  for f in "$KIT_ROOT"/claude/statusline/*.sh; do
     [ -f "$f" ] || continue
     name="$(basename "$f")"; found=1
     if [ "$UNLINK" -eq 1 ]; then
@@ -240,7 +242,7 @@ install_statusline() {
 install_hooks() {
   head_ "hooks -> $CLAUDE_HOME/hooks/"
   found=0
-  for f in "$KIT_ROOT"/claude-code/hooks/*; do
+  for f in "$KIT_ROOT"/claude/hooks/*; do
     [ -f "$f" ] || continue
     name="$(basename "$f")"
     case "$name" in .gitkeep|README.md) continue ;; esac
@@ -262,7 +264,7 @@ install_memory() {
   if [ "$UNLINK" -eq 1 ]; then
     unlink_item "$CLAUDE_HOME/CLAUDE.md" "CLAUDE.md"
   else
-    link_item "$KIT_ROOT/claude-code/CLAUDE.md" "$CLAUDE_HOME/CLAUDE.md" "CLAUDE.md"
+    link_item "$KIT_ROOT/claude/CLAUDE.md" "$CLAUDE_HOME/CLAUDE.md" "CLAUDE.md"
   fi
 }
 
@@ -277,7 +279,7 @@ check_json_config() {
   # that cannot work. Copy it by hand to ~/.claude.json or a repo's .mcp.json.
   for pair in "settings.json:$CLAUDE_HOME/settings.json"; do
     name="${pair%%:*}"; dest="${pair#*:}"
-    src="$KIT_ROOT/claude-code/$name"
+    src="$KIT_ROOT/claude/settings.base.json"
 
     if [ "$UNLINK" -eq 1 ]; then
       unlink_item "$dest" "$name"; continue
@@ -313,7 +315,7 @@ copy_item() {
 }
 
 install_project() {
-  agent_dir="$KIT_ROOT/templates/shared/agent"
+  agent_dir="$KIT_ROOT/project-templates/shared/agent"
 
   if [ ! -d "$agent_dir" ]; then
     printf 'no agent drop-in at %s\n' "$agent_dir" >&2; exit 1
@@ -323,7 +325,7 @@ install_project() {
   fi
   PROJECT="$(cd "$PROJECT" && pwd)"
 
-  printf 'preflight  %s%s%s\n' "$C_DIM" "$KIT_ROOT" "$C_OFF"
+  printf 'agent-kit  %s%s%s\n' "$C_DIM" "$KIT_ROOT" "$C_OFF"
   printf 'project     %s%s%s\n' "$C_DIM" "$PROJECT" "$C_OFF"
   [ "$DRY_RUN" -eq 1 ] && printf '%sdry run — nothing will be written%s\n' "$C_WARN" "$C_OFF"
 
@@ -338,7 +340,7 @@ install_project() {
   head_ "project-scoped skills -> .claude/skills/"
   scoped=$(python3 -c "
 import json
-d = json.load(open('$KIT_ROOT/skills/registry.json'))
+d = json.load(open('$KIT_ROOT/third-party/registry.json'))
 print('\n'.join(d.get('mine', {}).get('projectScoped', {}).keys()))" 2>/dev/null)
   if [ -z "$scoped" ]; then
     printf '  %s(none declared)%s\n' "$C_DIM" "$C_OFF"
@@ -346,7 +348,7 @@ print('\n'.join(d.get('mine', {}).get('projectScoped', {}).keys()))" 2>/dev/null
     printf '  %sPick the ones this repo actually uses — each one costs context%s\n' "$C_DIM" "$C_OFF"
     printf '  %sin every session of this project.%s\n' "$C_DIM" "$C_OFF"
     for name in $scoped; do
-      src=$(find "$KIT_ROOT/claude-code/skills" -maxdepth 2 -type d -name "$name" | head -1)
+      src=$(find "$KIT_ROOT/skills" -maxdepth 2 -type d -name "$name" | head -1)
       [ -n "$src" ] || continue
       if [ -e "$PROJECT/.claude/skills/$name" ]; then
         skip "$name" "already present"; skipped=$((skipped + 1))
@@ -358,7 +360,7 @@ print('\n'.join(d.get('mine', {}).get('projectScoped', {}).keys()))" 2>/dev/null
         printf '  %savail%s %s\n' "$C_DIM" "$C_OFF" "$name"
       fi
     done
-    [ "$SCOPED_ALL" -eq 1 ] || printf '\n  %sRe-run with --with-stack-skills to copy them all,%s\n  %sor copy the ones you want from claude-code/skills/stack/.%s\n' \
+    [ "$SCOPED_ALL" -eq 1 ] || printf '\n  %sRe-run with --with-stack-skills to copy them all,%s\n  %sor copy the ones you want from skills/stack/.%s\n' \
       "$C_DIM" "$C_OFF" "$C_DIM" "$C_OFF"
   fi
 
@@ -381,7 +383,7 @@ print('\n'.join(d.get('mine', {}).get('projectScoped', {}).keys()))" 2>/dev/null
 
 [ -n "$PROJECT" ] && install_project
 
-printf 'preflight  %s%s%s\n' "$C_DIM" "$KIT_ROOT" "$C_OFF"
+printf 'agent-kit  %s%s%s\n' "$C_DIM" "$KIT_ROOT" "$C_OFF"
 printf 'target      %s%s%s\n' "$C_DIM" "$CLAUDE_HOME" "$C_OFF"
 [ "$DRY_RUN" -eq 1 ] && printf '%sdry run — nothing will be written%s\n' "$C_WARN" "$C_OFF"
 [ "$UNLINK" -eq 1 ]  && printf '%sunlink mode%s\n' "$C_WARN" "$C_OFF"

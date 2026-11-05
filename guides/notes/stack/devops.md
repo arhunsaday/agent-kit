@@ -4,8 +4,8 @@ title: "DevOps"
 Docker, Kubernetes, Helm, Argo CD, Terraform, OpenShift · GitHub Actions,
 GitLab CI · Grafana, Prometheus, Loki, Tempo, Mimir.
 
-The workflow rules are in **[the devops workflow](/docs/workflows/devops)** and
-**[observability](/docs/workflows/observability)**. This page is what to install.
+The workflow rules are in **[the devops workflow](../../workflows/devops.md)** and
+**[observability](../../workflows/observability.md)**. This page is what to install.
 
 ## The honest gap
 

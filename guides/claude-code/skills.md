@@ -19,7 +19,7 @@ description: What it does. Use when <situation>. Do NOT use when <situation>.
 
 | | Where | Updated by |
 | --- | --- | --- |
-| **Mine** | `claude-code/skills/<category>/` in this repo | me, in git |
+| **Mine** | `skills/<category>/` in this repo | me, in git |
 | **Theirs** | `~/.claude/skills/` via the CLI | `npx skills update` |
 
 Never edit an installed third-party skill in place — the next update reverts it
@@ -37,7 +37,7 @@ silently. Fork it into the repo instead.
 | `tools/` | `pdf-inspector`, `reverse-engineer-api`, `memory-snapshot-perf` |
 
 Folders are for browsing. Install flattens them — see
-[what lands where](/docs/setup/what-lands-where#skills-organised-here-flat-there).
+[what lands where](../setup/what-lands-where.md#skills-organised-here-flat-there).
 
 ## The `skills` CLI
 
@@ -52,7 +52,7 @@ npx -y skills@latest init <name>              # scaffold a new one
 ```
 
 Browse at [skills.sh](https://www.skills.sh/). Full recommendations in
-[`skills/THIRD-PARTY.md`](https://github.com/arhunsaday/preflight/blob/main/skills/THIRD-PARTY.md).
+[`third-party/THIRD-PARTY.md`](https://github.com/arhunsaday/agent-kit/blob/main/third-party/THIRD-PARTY.md).
 
 ## Writing one that actually fires
 

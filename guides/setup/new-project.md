@@ -4,10 +4,10 @@ title: "Setting up a new project"
 Use the official shadcn starter, then apply the kit's configuration overlay:
 
 ```bash
-~/Repos/preflight/bootstrap.sh --list-presets
-~/Repos/preflight/bootstrap.sh new next-shadcn ../my-app
-~/Repos/preflight/bootstrap.sh new vite-shadcn ../my-spa --dry-run
-~/Repos/preflight/bootstrap.sh new shadcn-monorepo ../my-workspace
+~/Repos/agent-kit/install.sh --list-presets
+~/Repos/agent-kit/install.sh new next-shadcn ../my-app
+~/Repos/agent-kit/install.sh new vite-shadcn ../my-spa --dry-run
+~/Repos/agent-kit/install.sh new shadcn-monorepo ../my-workspace
 ```
 
 Also available: `vite-monorepo` and `tanstack-start`. These delegate to the
@@ -18,7 +18,7 @@ default. Upstream owns application source and may ask additional questions.
 For an existing project:
 
 ```bash
-~/Repos/preflight/bootstrap.sh --project .
+~/Repos/agent-kit/install.sh --project .
 ```
 
 Copies the agent drop-in into the repo. It **copies** rather than links, because
@@ -61,7 +61,7 @@ commands manually in `agent-commands.json`; configure deliberately won't overwri
 `safe`, `developer`, and `ops` are opt-in permission presets, not isolation
 boundaries. Existing global permissions may remain effective. All retain the
 kit's deny rules and hooks. Global installation remains unchanged; standalone
-`bootstrap.sh --profile safe` prints settings JSON for manual review/merge only.
+`install.sh --profile safe` prints settings JSON for manual review/merge only.
 
 Add `.claude/command-log.txt` to your project's gitignore if using the permissions
 pack. The installer does not rewrite an existing gitignore or package manifest.

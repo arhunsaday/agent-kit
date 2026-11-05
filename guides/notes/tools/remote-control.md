@@ -29,7 +29,7 @@ describing.
 
 Has its own remote control: track and steer CLI sessions from github.com or the
 mobile app. Worth knowing if your employer standardises on Copilot — see
-[Copilot](/docs/other-agents/copilot).
+[Copilot](../../other-agents/copilot.md).
 
 ## Before you connect anything
 

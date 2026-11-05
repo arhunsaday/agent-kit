@@ -48,7 +48,7 @@ Claude Code hooks run inside the agent loop. Git hooks catch what already got
 written — belt and braces.
 
 ```bash
-cp ~/Repos/preflight/templates/shared/agent/git-hooks/pre-commit-secrets.sh .git/hooks/pre-commit
+cp ~/Repos/agent-kit/project-templates/shared/agent/git-hooks/pre-commit-secrets.sh .git/hooks/pre-commit
 chmod +x .git/hooks/pre-commit
 ```
 
@@ -96,5 +96,5 @@ Pair it with [LukasNiessen/kubernetes-skill](https://github.com/LukasNiessen/kub
 ## What is missing from this kit
 
 No `terraform-patterns`, `k8s-manifests` or `helm-chart` skills yet. See the
-[gap list](https://github.com/arhunsaday/preflight#readme) in the repo's README — they are the top of the backlog for this
+[gap list](https://github.com/arhunsaday/agent-kit#readme) in the repo's README — they are the top of the backlog for this
 stack.

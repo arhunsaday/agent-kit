@@ -8,7 +8,7 @@ screenshots.
 ## Setup
 
 Three servers, one per environment, each with its own **Viewer** token — see
-[my servers](/docs/mcp/my-servers#grafana--one-server-per-environment). Separate
+[my servers](../mcp/my-servers.md#grafana--one-server-per-environment). Separate
 names mean querying production is always a deliberate act.
 
 ## The loop

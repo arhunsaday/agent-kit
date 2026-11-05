@@ -35,7 +35,7 @@ A good reference skeleton lives in an internal repository at
 
 | You want | Use |
 | --- | --- |
-| Your own machines in sync | this kit + `bootstrap.sh` |
+| Your own machines in sync | this kit + `install.sh` |
 | A team on the same setup | **a plugin + marketplace** |
 | One capability shared publicly | a skill repo + `npx skills add` |
 

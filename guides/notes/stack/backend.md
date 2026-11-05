@@ -44,6 +44,6 @@ instinct:
 
 ## Postgres + pgvector
 
-For RAG work, see [AI](/docs/stack/ai). Operationally: `pgvector` index choice (`ivfflat`
+For RAG work, see [AI](ai.md). Operationally: `pgvector` index choice (`ivfflat`
 vs `hnsw`) is a real decision with a real cost, not a default — make the agent
 justify it against your row count and recall target.

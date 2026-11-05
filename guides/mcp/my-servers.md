@@ -44,7 +44,7 @@ possible moment. Service account with the **Viewer** role only.
 
 Docs: [grafana/mcp-grafana](https://github.com/grafana/mcp-grafana).
 Gives the agent dashboards, Prometheus and Loki queries, and alert state — see
-[the observability workflow](/docs/workflows/observability).
+[the observability workflow](../workflows/observability.md).
 
 ## Notion
 
@@ -76,10 +76,10 @@ Outlook is AppleScript-driven, so macOS-only and it drives the desktop client.
 
 ## Local HTTP servers
 
-`radar` and `a second local server` are local. The HTTP one needs the `mcp-remote` bridge:
+Some servers run on your own machine (for example a local HTTP server on a fixed port). The HTTP one needs the `mcp-remote` bridge:
 
 ```json
-{"radar": {"command": "npx", "args": ["-y", "mcp-remote", "http://localhost:52247/mcp", "--allow-http"]}}
+{"local-tool": {"command": "npx", "args": ["-y", "mcp-remote", "http://localhost:52247/mcp", "--allow-http"]}}
 ```
 
 `--allow-http` is only acceptable because it is `localhost`. Never for a remote

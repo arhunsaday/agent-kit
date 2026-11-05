@@ -4,8 +4,8 @@ Reusable prompt text that is **not** a skill and **not** a slash command.
 
 | | Fires when | Lives in |
 | --- | --- | --- |
-| Skill | the model matches its description | `claude-code/skills/` |
-| Slash command | you type `/name` | `claude-code/commands/` |
+| Skill | the model matches its description | `skills/` |
+| Slash command | you type `/name` | `claude/commands/` |
 | **Prompt** | you paste it | here |
 
 Use this folder for text you send to a *web* chat, another vendor's tool, or a

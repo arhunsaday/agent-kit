@@ -47,7 +47,7 @@ From [punkpeye/awesome-mcp-servers](https://github.com/punkpeye/awesome-mcp-serv
 | [headroomlabs-ai/headroom](https://github.com/headroomlabs-ai/headroom) ★73k | Compresses tool output before it enters context — attacks the >150k problem directly |
 | [DeusData/codebase-memory-mcp](https://github.com/DeusData/codebase-memory-mcp) ★44k | Structural code index |
 | [GLips/Figma-Context-MCP](https://github.com/GLips/Figma-Context-MCP) | Figma layout as data, not screenshots |
-| [grafana/mcp-grafana](https://github.com/grafana/mcp-grafana) | Already in use — see [my servers](/docs/mcp/my-servers) |
+| [grafana/mcp-grafana](https://github.com/grafana/mcp-grafana) | Already in use — see [my servers](../mcp/my-servers.md) |
 
 ## Catalogs themselves
 

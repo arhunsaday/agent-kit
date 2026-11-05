@@ -6,14 +6,14 @@ generates a concise contract and discovers actual package scripts instead of
 deploying their placeholders.
 
 ```bash
-./bootstrap.sh --project ~/path/to/repo
+./install.sh --project ~/path/to/repo
 ```
 
 Generates configuration, never overwrites differing files. Select tools with
 `--agents claude,codex,cursor`; select packs with `--packs agent,quality,permissions`.
 Generated projects receive `scripts/sync-agent-files.py`; run with `--check` for
 drift detection or without it to regenerate pointers. Canonical pointers in this
-directory are maintained by `python3 scripts/kit.py sync templates/shared/agent`
+directory are maintained by `python3 scripts/kit.py sync project-templates/shared/agent`
 from the kit root. Legacy `copilot-instructions.md` and `cursor-rules/` examples
 are not installer inputs; canonical paths are `.github/` and `.cursor/rules/`.
 

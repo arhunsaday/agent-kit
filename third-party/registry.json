@@ -13,7 +13,7 @@
     "trigger, which makes the model's choice arbitrary rather than informed.",
     "",
     "  mine.parked          never loaded until you unpark it",
-    "  mine.projectScoped   NOT global. bootstrap.sh --project installs these into",
+    "  mine.projectScoped   NOT global. install.sh --project installs these into",
     "                       a repo's own .claude/skills/, where they have no",
     "                       competition and cost nothing in unrelated sessions",
     "  thirdParty.parked    same idea, for ~/.agents/skills/",

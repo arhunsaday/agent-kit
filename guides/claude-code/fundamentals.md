@@ -30,7 +30,7 @@ Everything else is downstream of this.
   being used.
 - **Write long output to a file, then read the slice you need.** Never dump a
   200-page extraction or a full test log into the conversation.
-- **[RTK](/docs/tools/rtk)** compresses command output before it reaches you —
+- **[RTK](../notes/tools/rtk.md)** compresses command output before it reaches you —
   60–90% on bash, ~99% on test runs. `rtk init -g` installs the rewrite hook.
 - The statusline gauge in this kit shows context use live — watch it.
 

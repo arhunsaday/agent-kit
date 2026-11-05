@@ -4,7 +4,7 @@ Shell commands Claude Code runs at fixed points in its own loop. A hook is the
 only mechanism that is **deterministic** — `CLAUDE.md` asks the model to behave,
 a hook makes the behaviour happen whether the model cooperates or not.
 
-`bootstrap.sh` links these into `~/.claude/hooks/` and `chmod +x` them. They do
+`install.sh` links these into `~/.claude/hooks/` and `chmod +x` them. They do
 nothing until `settings.json` references them — see [`../settings.json`](../settings.json).
 
 ## The exit-code contract

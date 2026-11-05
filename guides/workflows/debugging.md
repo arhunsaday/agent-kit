@@ -38,7 +38,7 @@ unbounded module-level caches.
 ## Production debugging
 
 With the Grafana MCP server connected, the agent can query Loki and Prometheus
-directly — see [observability](/docs/workflows/observability). The discipline:
+directly — see [observability](observability.md). The discipline:
 
 1. **Read before writing.** Query logs and metrics before touching anything.
 2. **Preserve evidence before remediating** during an incident, when it is safe.
