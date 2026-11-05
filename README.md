@@ -1,30 +1,37 @@
-# arhun-plugins
+# agent-kit
 
-A [Claude Code](https://code.claude.com) plugin marketplace: mods, skills, commands, agents and hooks.
+Everything I install into AI coding agents, in one repository: skills, Claude
+Code plugins and mods, hooks, subagents, slash commands, a status line, MCP
+templates, loadouts, the global `CLAUDE.md`, project templates, prompts,
+standards and evals.
 
-## Install
+One repository, three ways in:
 
-Add the marketplace once:
+| You want | Run |
+|---|---|
+| The Claude Code plugins and mods | `claude plugin marketplace add arhunsaday/agent-kit`, then `claude plugin install <plugin>@arhun-plugins` |
+| The skills, in any agent (Claude Code, Codex, Cursor, ...) | `npx skills add arhunsaday/agent-kit` (add `--skill <name>` for one) |
+| All of it, managed, previewed and reversible | `preflight source add github:arhunsaday/agent-kit@main`, then `preflight search`, `preflight loadouts list`, `preflight loadouts install base` |
+
+[Preflight](https://github.com/arhunsaday/preflight) is the tool; this
+repository is content. Preflight reads it through `catalog/index.json`, pinned
+to the commit the ref names, and writes each file with a preview, a lock and a
+rollback.
+
+## Plugins (marketplace `arhun-plugins`)
+
+In Claude Code, add the marketplace once and install from it:
 
 ```
-/plugin marketplace add arhunsaday/claude-plugins
-```
-
-Then install any plugin from it:
-
-```
+/plugin marketplace add arhunsaday/agent-kit
 /plugin install <plugin>@arhun-plugins
 ```
-
-From a shell, `claude plugin marketplace add arhunsaday/claude-plugins` and `claude plugin install <plugin>@arhun-plugins` do the same.
-
-## Plugins
 
 | Plugin | Kind | What it does |
 |---|---|---|
 | [plan-progress](plugins/plan-progress) | mod | Live plan progress bars above the prompt, with agent strips you can fold and soft sounds. |
 | [where-am-i](plugins/where-am-i) | mod | A live recap above the prompt: goal, what Claude is doing now, next step, what waits on you. |
-| [blast-radius](plugins/blast-radius) | mod | Holds destructive commands and shows what they would destroy before they run. |
+| [blast-radius](plugins/blast-radius) | mod | Holds destructive commands and shows what they would destroy before they run. Replaces the old `block-dangerous.sh` hook. |
 | [context-cache](plugins/context-cache) | mod | Context usage, usage limits and prompt-cache warmth above the prompt, as rings; collapses to one line. |
 | [cache-warm](plugins/cache-warm) | mod | Prompt-cache countdown, hit rate and savings above the prompt, with keep-warm pings, toggled by /cache-warm. |
 | [assumptions](plugins/assumptions) | mod | Lists the small guesses Claude made without asking; mark each right or wrong, and a wrong one gets fixed on its own. |
@@ -38,55 +45,107 @@ From a shell, `claude plugin marketplace add arhunsaday/claude-plugins` and `cla
 | [spend-meter](plugins/spend-meter) | mod | Session and per-turn cost against a budget: bar, toast at 80%, confirmation at 100%; collapses to one line. |
 | [preflight](plugins/preflight) | plugin | Lets Claude drive the Preflight CLI: audit your setup, install resources and loadouts with a dry run first, share or import a setup. |
 
+## What is in it
+
+|                    | Count   |                                                                                       |
+| ------------------ | ------- | ------------------------------------------------------------------------------------- |
+| Skills (mine)      | **51**  | communication · delivery · quality · architecture · design · stack · ai · ops · tools |
+| Hooks              | 9       | 3 blocking by default (secret reads, protected files, red-tests-no-PR); `block-dangerous` is deprecated |
+| Slash commands     | 3       | papercut · skills-sync · session-audit |
+| Subagents          | 11      | specialised roles in `claude/agents/` |
+| Instincts          | 5       | reviewed, situational lessons for the project template |
+| Tool pointers      | 9       | Claude · Codex · Cursor · Copilot · Gemini · Windsurf · Zed · Cline · Aider |
+| Loadouts           | 6       | role × stack bundles with a reason per item, see [loadouts/LOADOUTS.md](loadouts/LOADOUTS.md) |
+
+Every skill records where it came from, and imported skills keep their
+upstream `LICENSE`:
+
+```yaml
+source:
+  upstream: JuliusBrussee/caveman@7bb7130
+  license: MIT (JuliusBrussee)
+  imported: 2026-08-02
+```
+
+Skills by other people are not copied here: [third-party/](third-party/)
+lists them and installs them with `npx skills`.
+
 ## Layout
 
 ```
-.claude-plugin/marketplace.json   the catalog: one entry per plugin
-plugins/<name>/                   one folder per plugin
-  .claude-plugin/plugin.json      manifest (name, version, description, ...)
-  skills/<skill>/SKILL.md         skills
-  commands/*.md                   slash commands
-  agents/*.md                     subagents
-  hooks/hooks.json                shell hooks, or { "modules": [...] } for a mod
-  .mcp.json                       MCP servers
-  types/index.d.ts                a mod's $.state contract
-templates/plugin/                 starter for a skills/commands/agents/hooks plugin
-templates/mod/                    starter for a mod (function hooks that draw UI)
-scripts/new-plugin.sh             scaffolds a plugin from a template and lists it
+.claude-plugin/marketplace.json   the arhun-plugins marketplace
+plugins/<name>/                   one plugin or mod per folder
+scaffolds/{plugin,mod}/           starters for scripts/new-plugin.sh
+skills/<category>/<name>/         skills (npx skills finds them two levels deep)
+claude/                           CLAUDE.md, rules/, settings.base.json, hooks/,
+                                  commands/, agents/, statusline/, mcp.json
+loadouts/                         loadouts.json, profiles.json, LOADOUTS.md
+third-party/                      registry of other people's skills + installers
+project-templates/                project drop-in (AGENTS.md, instincts, CI), starters
+agent-instructions/ prompts/ standards/ evals/
+guides/                           how this content is meant to be used
+catalog/index.json                generated by `preflight catalog build .`
+install.sh                        transitional installer (symlinks into ~/.claude)
+scripts/                          kit.py, loadouts.py, instincts.py, behavior_evals.py,
+                                  doctor.sh, new-plugin.sh
 ```
+
+## With Preflight
+
+```bash
+preflight source add github:arhunsaday/agent-kit@main   # pinned to today's commit
+preflight search caveman                                # results show source:agent-kit
+preflight loadouts show base
+preflight --dry-run loadouts install base
+preflight source update agent-kit                       # move to the ref's new commit
+```
+
+`claude/CLAUDE.md` is an `instructions` resource: Preflight writes it into
+`~/.claude/CLAUDE.md` as a marked block, so anything you wrote around it stays
+yours. Hosts, tokens and servers that are yours alone (work Jira, Grafana,
+local tools) do not belong here; keep them in your dotfiles overlay and use the
+`${VAR}` placeholders in `claude/mcp.json`.
+
+After changing content, rebuild the index:
+
+```bash
+npx @arhunsaday/preflight catalog build . --repo arhunsaday/agent-kit
+```
+
+## Without Preflight (transitional)
+
+```bash
+git clone https://github.com/arhunsaday/agent-kit ~/Repos/agent-kit
+cd ~/Repos/agent-kit && ./install.sh --dry-run && ./install.sh
+./install.sh --project ../my-repo           # copy the agent drop-in into a project
+./install.sh new next-shadcn ../my-app      # official starter + configuration packs
+./scripts/doctor.sh                         # what is installed, wired, missing
+```
+
+`install.sh` links into free slots only, stops on conflicts, backs up with
+`--force`, and never overwrites an existing `settings.json`. It goes away as
+Preflight takes over each target. Guides: [guides/](guides/).
 
 ## Adding a plugin
 
 ```bash
 scripts/new-plugin.sh my-plugin          # skills, commands, agents, hooks, MCP
-```
-
-```bash
 scripts/new-plugin.sh my-mod mod         # a mod
-```
-
-Then fill in the placeholders, delete the components you don't need, and check it:
-
-```bash
 claude plugin validate .
 ```
 
-## Developing
+Run one from its folder while you work on it (`claude --plugin-dir plugins/<name>`),
+and bump `version` in its `plugin.json` when you release a change.
 
-Run a plugin straight from its folder; edits reload on save:
-
-```bash
-claude --plugin-dir plugins/context-cache
-```
-
-Or add this checkout as a marketplace, so installs read from the folder and `/reload-plugins` picks up edits:
+## Checks
 
 ```bash
-claude plugin marketplace add ./
+python3 scripts/kit.py check
+python3 -m unittest discover -s tests
+claude plugin validate .
 ```
-
-Bump `version` in a plugin's `plugin.json` when you release a change; `claude plugin update` only fetches a new version.
 
 ## Licence
 
-MIT, see [LICENSE](LICENSE). Plugins adapted from other projects keep their own licence file and credit the original authors in their README.
+MIT, see [LICENSE](LICENSE). Plugins and skills adapted from other projects
+keep their own licence file and credit the original authors.
