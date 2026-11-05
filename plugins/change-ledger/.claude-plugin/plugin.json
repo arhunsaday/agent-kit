@@ -1,0 +1,18 @@
+{
+  "name": "change-ledger",
+  "version": "0.1.0",
+  "description": "Lists the files Claude touched this session with +/- lines in a band above the prompt, and a Commit this batch button that asks Claude to commit exactly those files; collapses to one line.",
+  "author": {
+    "name": "Arhun Saday",
+    "url": "https://arhun.fr"
+  },
+  "license": "MIT",
+  "keywords": [
+    "mod",
+    "git",
+    "changes",
+    "commit",
+    "collapsible"
+  ],
+  "types": "./types/index.d.ts"
+}

@@ -1,0 +1,18 @@
+{
+  "name": "net-watch",
+  "version": "0.1.0",
+  "description": "Lists the domains contacted in the session (WebFetch URLs; curl, wget, npm, pip and git hosts in Bash) with allow and deny per domain kept in .claude/net-watch.json; denied domains are blocked on the next call.",
+  "author": {
+    "name": "Arhun Saday",
+    "url": "https://arhun.fr"
+  },
+  "license": "MIT",
+  "keywords": [
+    "mod",
+    "network",
+    "safety",
+    "domains",
+    "collapsible"
+  ],
+  "types": "./types/index.d.ts"
+}

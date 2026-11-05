@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "arhun-plugins",
-  "description": "Arhun Saday's Claude Code plugins: mods, skills, commands, agents and hooks.",
+  "description": "agent-kit: Arhun Saday's Claude Code plugins and mods. The same repository holds skills (npx skills add arhunsaday/agent-kit) and a Preflight content source.",
   "owner": {
     "name": "Arhun Saday",
     "url": "https://github.com/arhunsaday"
@@ -56,6 +56,18 @@
       ]
     },
     {
+      "name": "change-ledger",
+      "source": "./plugins/change-ledger",
+      "description": "Lists the files Claude touched this session with +/- lines in a band above the prompt, and a Commit this batch button that asks Claude to commit exactly those files; collapses to one line",
+      "category": "mod",
+      "tags": [
+        "mod",
+        "git",
+        "changes",
+        "commit"
+      ]
+    },
+    {
       "name": "context-cache",
       "source": "./plugins/context-cache",
       "description": "Context usage, usage limits and prompt-cache warmth above the prompt, drawn in your theme; collapses to one line",
@@ -68,6 +80,41 @@
       ]
     },
     {
+      "name": "context-diet",
+      "source": "./plugins/context-diet",
+      "description": "Flags big tool results and files read three or more times, and suggests /compact when the context passes a threshold (60% by default); a band lists the top offenders",
+      "category": "mod",
+      "tags": [
+        "mod",
+        "context",
+        "tokens",
+        "compact"
+      ]
+    },
+    {
+      "name": "decision-log",
+      "source": "./plugins/decision-log",
+      "description": "Spots decisions in your prompts (French and English cues like \"on part sur\", \"we'll go with\") and appends them to DECISIONS.md with the date; a band shows the last one and /decision-log lists them.",
+      "category": "mod",
+      "tags": [
+        "mod",
+        "decisions",
+        "log"
+      ]
+    },
+    {
+      "name": "net-watch",
+      "source": "./plugins/net-watch",
+      "description": "Lists the domains contacted in the session (WebFetch URLs; curl, wget, npm, pip and git hosts in Bash) with allow and deny per domain kept in .claude/net-watch.json; denied domains are blocked on the next call",
+      "category": "mod",
+      "tags": [
+        "mod",
+        "network",
+        "safety",
+        "domains"
+      ]
+    },
+    {
       "name": "plan-progress",
       "source": "./plugins/plan-progress",
       "description": "Live plan progress bars above the Claude Code prompt: stages, steps, foldable agent strips and soft sounds",
@@ -76,6 +123,52 @@
         "mod",
         "progress",
         "ui"
+      ]
+    },
+    {
+      "name": "preflight",
+      "source": "./plugins/preflight",
+      "description": "Lets Claude drive the Preflight CLI: audit your AI setup (doctor, context cost), install resources and loadouts with a dry run first, and share or import a setup.",
+      "category": "plugin",
+      "tags": [
+        "preflight",
+        "audit",
+        "config"
+      ]
+    },
+    {
+      "name": "scope-fence",
+      "source": "./plugins/scope-fence",
+      "description": "Declare the paths Claude may change (.claude/fence.json or /scope-fence); Write, Edit and MultiEdit outside are held with Allow once / Block, and a band shows the fence",
+      "category": "mod",
+      "tags": [
+        "mod",
+        "safety",
+        "scope",
+        "guard"
+      ]
+    },
+    {
+      "name": "secret-guard",
+      "source": "./plugins/secret-guard",
+      "description": "Blocks Write, Edit and Bash calls that would put API keys, tokens, private keys or .env contents on disk or on the network, with a masked preview and an allow-once button.",
+      "category": "mod",
+      "tags": [
+        "mod",
+        "safety",
+        "secrets"
+      ]
+    },
+    {
+      "name": "spend-meter",
+      "source": "./plugins/spend-meter",
+      "description": "Session and per-turn cost above the prompt with a budget bar, a toast at 80% and a confirmation before the next prompt at 100%; collapses to one line",
+      "category": "mod",
+      "tags": [
+        "mod",
+        "cost",
+        "budget",
+        "usage"
       ]
     },
     {

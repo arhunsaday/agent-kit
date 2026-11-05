@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Scaffold plugins/<name> from a template and list it in the marketplace.
+# Scaffold plugins/<name> from a scaffold and list it in the marketplace.
 # Usage: scripts/new-plugin.sh <name> [plugin|mod]
 set -euo pipefail
 
@@ -22,9 +22,9 @@ if [[ -e "$dest" ]]; then
   exit 1
 fi
 
-cp -R "$root/templates/$kind" "$dest"
+cp -R "$root/scaffolds/$kind" "$dest"
 grep -rl "example-$kind" "$dest" | while IFS= read -r f; do
-  sed -i '' "s/example-$kind/$name/g" "$f"
+  sed -i.bak "s/example-$kind/$name/g" "$f" && rm -f "$f.bak"
 done
 
 node -e '

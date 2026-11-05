@@ -1,0 +1,27 @@
+{
+  "name": "scope-fence",
+  "version": "0.1.0",
+  "description": "Declare the paths Claude may change (.claude/fence.json or /scope-fence src/api/); Write, Edit and MultiEdit outside are held with Allow once / Block, and a band shows the fence.",
+  "author": {
+    "name": "Arhun Saday",
+    "url": "https://arhun.fr"
+  },
+  "license": "MIT",
+  "keywords": [
+    "mod",
+    "safety",
+    "scope",
+    "guard",
+    "collapsible"
+  ],
+  "types": "./types/index.d.ts",
+  "userConfig": {
+    "timeoutSeconds": {
+      "type": "number",
+      "title": "Auto-block after (seconds)",
+      "description": "How long a held call waits for an answer before it is blocked. 0 waits forever.",
+      "default": 0,
+      "min": 0
+    }
+  }
+}

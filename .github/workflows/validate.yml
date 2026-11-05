@@ -6,7 +6,7 @@ on:
   pull_request:
 
 jobs:
-  validate:
+  plugins:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -19,7 +19,7 @@ jobs:
       - name: Validate and test each plugin
         run: |
           set -e
-          for dir in plugins/*/ templates/*/; do
+          for dir in plugins/*/ scaffolds/*/; do
             echo "::group::$dir"
             claude plugin validate "$dir"
             if find "$dir" -name '*.test.ts' -not -path '*/node_modules/*' | grep -q .; then
@@ -27,3 +27,81 @@ jobs:
             fi
             echo "::endgroup::"
           done
+
+  content:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Shell syntax
+        run: |
+          fail=0
+          for f in install.sh scripts/*.sh claude/hooks/*.sh claude/statusline/*.sh \
+                   third-party/*.sh project-templates/shared/agent/*.sh \
+                   project-templates/shared/agent/git-hooks/*.sh; do
+            [ -f "$f" ] || continue
+            bash -n "$f" || { echo "::error file=$f::syntax error"; fail=1; }
+          done
+          exit $fail
+
+      - name: Repository contracts and installer tests
+        run: |
+          python3 scripts/kit.py check
+          python3 -m unittest discover -s tests
+
+      - name: JSON is valid
+        run: |
+          for f in $(git ls-files '*.json'); do
+            python3 -c "import json,sys;json.load(open(sys.argv[1]))" "$f" \
+              || { echo "::error file=$f::invalid JSON"; exit 1; }
+          done
+
+      - name: Every skill has name, description and source
+        run: |
+          fail=0
+          for f in skills/*/*/SKILL.md; do
+            head -40 "$f" | grep -q '^name:'        || { echo "::error file=$f::missing name"; fail=1; }
+            head -40 "$f" | grep -q '^description:' || { echo "::error file=$f::missing description"; fail=1; }
+            head -40 "$f" | grep -q '^source:'      || { echo "::error file=$f::missing source"; fail=1; }
+          done
+          exit $fail
+
+      - name: No duplicate skill names
+        run: |
+          dupes=$(basename -a $(dirname skills/*/*/SKILL.md) | sort | uniq -d)
+          [ -z "$dupes" ] || { echo "::error::installs flatten categories — duplicate names: $dupes"; exit 1; }
+
+      - name: Hooks behave
+        run: |
+          set -e
+          chmod +x claude/hooks/*.sh
+          echo '{"tool_input":{"file_path":".env"}}'          | claude/hooks/protect-files.sh     && exit 1 || [ $? -eq 2 ]
+          echo '{"tool_input":{"file_path":".env.example"}}'  | claude/hooks/protect-files.sh
+          echo "hooks OK"
+
+      - name: install.sh --dry-run is clean
+        run: CLAUDE_HOME=$(mktemp -d) ./install.sh --dry-run
+
+      - name: Nothing private
+        run: |
+          if git grep -nIiE '(gh[pousr]_[A-Za-z0-9]{20,}|sk-ant-[A-Za-z0-9_-]{10,}|xox[bp]-[A-Za-z0-9-]{10,}|-----BEGIN [A-Z ]*PRIVATE KEY-----)' -- . ':!skills/quality/verify-security' ':!project-templates/shared/agent/git-hooks' ':(exclude,glob)plugins/*/tests/**'; then
+            echo "::error::a credential-looking string is committed"; exit 1
+          fi
+
+  catalog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # The index format is Preflight's schema, so the version is pinned.
+      # Before the first npm publish the check cannot run: say so and stop.
+      # From the publish on, a stale index fails the job.
+      - name: catalog/index.json is up to date
+        run: |
+          if ! npm view @arhunsaday/preflight@0.1.0 version >/dev/null 2>&1; then
+            echo "::warning::@arhunsaday/preflight@0.1.0 is not on npm yet; the catalogue check did not run."
+            exit 0
+          fi
+          npx --yes @arhunsaday/preflight@0.1.0 catalog build . --repo arhunsaday/agent-kit --check
