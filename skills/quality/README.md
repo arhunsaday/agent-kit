@@ -11,6 +11,9 @@ Gates between "it compiles" and "it is done".
 | [`debug-loop`](debug-loop/) | Build a tight failing feedback loop *before* diagnosing |
 | [`pr-workflow`](pr-workflow/) | Create a PR, review one, implement submitted fixes (`gh`) |
 | [`pr-review-governance`](pr-review-governance/) | Deep review: code vs spec, security, repo rules, tests, docs |
+| [`correct`](correct/) | Turn repeated agent mistakes into architecture, types, lints or tests, not docs (pstack, MIT) |
+| [`change-blast-radius`](change-blast-radius/) | What can this change break elsewhere? Prove the one safety fact by running code. Not the `blast-radius` mod (pstack, MIT) |
+| [`benchmark-checklist`](benchmark-checklist/) | Vet a perf number before you report it: limiter, tuning, limits, errors, repeatability (pstack, MIT) |
 
 The four `verify-*` skills ship real analyzers in `scripts/*.cjs` (8–13 KB of
 Node each, no dependencies beyond builtins) — they are not prompt-only.

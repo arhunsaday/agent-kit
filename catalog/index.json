@@ -374,6 +374,39 @@
       ]
     },
     {
+      "id": "skill:unslop",
+      "type": "skill",
+      "name": "unslop",
+      "description": "Cut AI tells from any writing.",
+      "source": "https://github.com/arhunsaday/agent-kit/blob/main/skills/communication/unslop/SKILL.md",
+      "scope": "project",
+      "harnesses": [
+        "claude-code"
+      ],
+      "enabled": true,
+      "config": {
+        "name": "unslop",
+        "description": "Cut AI tells from any writing.",
+        "disable-model-invocation": true,
+        "source": {
+          "upstream": "cursor/plugins@bb68f23 (pstack, https://github.com/cursor/plugins/tree/main/pstack)",
+          "license": "MIT (Lauren Tan)",
+          "imported": "2026-11-05"
+        },
+        "files": [
+          {
+            "path": "LICENSE",
+            "contents": "MIT License\n\nCopyright (c) 2026 Lauren Tan\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n"
+          }
+        ],
+        "repository": "https://github.com/arhunsaday/agent-kit"
+      },
+      "content": "---\nname: unslop\ndescription: Cut AI tells from any writing.\ndisable-model-invocation: true\nsource:\n  upstream: cursor/plugins@bb68f23 (pstack, https://github.com/cursor/plugins/tree/main/pstack)\n  license: MIT (Lauren Tan)\n  imported: 2026-11-05\n---\n\n# Unslop\n\nEdit text to remove AI patterns. Scan for the patterns below, then rewrite. Preserve meaning and match the intended tone.\n\n## Patterns to detect and fix\n\nRule numbers are stable ids that other skills cite. A removed rule leaves a gap.\n\n### Content\n\n3. **Superficial -ing phrases.** \"highlighting...\", \"ensuring...\", \"reflecting...\", \"showcasing...\", \"fostering...\". Delete or expand with real sources.\n5. **Vague attributions.** \"Experts believe\", \"Industry reports suggest\", \"Some critics argue\". Name the source or delete.\n\n### Language\n\n7. **AI vocabulary.** Additionally, crucial, delve, enduring, enhance, fostering, garner, interplay, intricate, landscape (abstract), pivotal, showcase, tapestry (abstract), testament, underscore, vibrant. Replace with plain words.\n8. **Fancy ways to say \"is\".** \"serves as\", \"stands as\", \"boasts\", \"features\". Say \"is\" or \"has\".\n9. **\"Not just X, but Y.\"** State the point directly instead.\n10. **Rule of three.** Don't force ideas into groups of three. Use the natural number.\n11. **Synonym cycling.** Protagonist, main character, central figure, hero all in one paragraph. Pick one, repeat it.\n12. **False ranges.** \"from X to Y\" where X and Y aren't on a meaningful scale. List topics directly.\n\n### Style\n\n13. **Em dash overuse.** Avoid em dashes entirely. Use periods or commas only (no parentheses, no en dashes, no hyphen-as-dash substitutes). If a thought needs separation, end the sentence or use a comma.\n14. **Colon overuse.** Colons are fine before a list or example, not as mid-sentence connectors. \"If you're coming from traditional automation: instead of registering event handlers, you describe conditions\" adds nothing with the colon. Rewrite to let the point stand on its own without comparison framing. \"Describing when the scheduler should fire works best as plain English.\" Same meaning, no crutch punctuation.\n15. **Boldface overuse.** Don't bold every proper noun or acronym.\n16. **Inline-header lists.** The tell is a bold label and colon that restates the line: \"**Performance:** Performance improved...\". Convert those to prose. A bold lead-in that ends in a period, names the item, and is followed by genuinely new detail (\"**Schema in TypeScript.** Tables live in one file.\") is fine, not a tell.\n17. **Title case headings.** Use sentence case.\n18. **Decorative emojis.** Remove from headings and bullets.\n19. **Curly quotes.** Use straight quotes.\n\n### Communication artifacts\n\n20. **Chatbot phrases.** \"I hope this helps!\", \"Let me know if...\", \"Of course!\", \"Certainly!\", \"Found the smoking gun!\" Remove.\n22. **Sycophantic tone.** \"Great question! You're absolutely right!\" Respond directly.\n\n### Filler\n\n23. **Filler phrases.** \"In order to\" becomes \"To\". \"Due to the fact that\" becomes \"Because\". Delete \"It is important to note that\".\n24. **Excessive hedging.** \"could potentially possibly be argued that it might\" becomes \"may\".\n25. **Generic conclusions.** \"The future looks bright.\" State specific plans or facts.\n\n### Jargon\n\n26. **Abstract metaphor nouns.** Substrate (base), wedge, wedge in (add), vector (way, method), locus, vantage, nexus, primitive as a noun, harness as a metaphor, surface as in \"API surface\", bedrock, scaffolding as a metaphor, modality, paradigm, gold-plating (more than the job needs), ratchet as a metaphor (the mechanism's real name, or a limit that only tightens), evacuate for moving code (move out), endgame (the last phase), north star, flywheel. These read as technical but usually have a plainer concrete word. Pick the concrete word.\n\n### Plain speech\n\n27. **Say what it does, not how it feels.** \"the database stays close at hand\", \"SQL you can read\", \"types that follow your schema\" name a feeling. The fix names the mechanism or a number: \"`.toSQL()` returns the exact string sent to the database\", \"a column rename fails the build\". Ask what the sentence tells the reader to do or know, then write that. If you can't restate it as a concrete instruction, fact, or number, cut it. One more check: if the sentence could appear unchanged in another project's docs, it says nothing about this one. Cut it.\n28. **Shorten or split dense sentences.** If the reader has to backtrack to parse a sentence, break it in two or drop clauses. One idea per sentence.\n29. **Active voice.** Prefer it. Catch \"is/are/was/were + past participle\" and name the actor: \"queries are validated\" becomes \"the compiler validates queries\", \"the file is parsed by the loader\" becomes \"the loader parses the file\". Passive is fine only when the actor is unknown or genuinely doesn't matter.\n30. **Cut adverbs, or use a stronger verb.** \"runs quickly\" becomes \"is fast\" or the number, and \"significantly improves\" becomes the measured delta. An adverb propping up a weak verb means the verb is wrong.\n31. **Prefer the plain word.** \"utilize\" and \"leverage\" become \"use\", \"facilitate\" becomes \"help\", \"numerous\" becomes \"many\", \"in the event that\" becomes \"if\". The fancier synonym is rarely clearer.\n32. **Mannered prose.** Metaphor or flourish where a literal phrase exists: aphorisms (\"wire it or delete it\"), rhetorical fragments for effect, personified code (\"the plan holds it\"), figurative verbs (\"rides along\", \"stands on\"), stock framing phrases. \"A dial worth turning\" becomes \"a parameter worth varying\". Say what you mean. Rule 26 covers the metaphor nouns.\n33. **Over-compression.** Dropped articles, verbless fragments, symbol-speak, and abbreviations that make the reader decode instead of read. \"Parser rejects bad date → exit 2, no write\" becomes \"The parser rejects a bad date, exits with code 2, and writes nothing.\" Write whole sentences with their articles and verbs, and spell out arrows and abbreviations.\n",
+      "tags": [
+        "communication"
+      ]
+    },
+    {
       "id": "skill:ai-time-estimates",
       "type": "skill",
       "name": "ai-time-estimates",
@@ -550,6 +583,39 @@
         "repository": "https://github.com/arhunsaday/agent-kit"
       },
       "content": "---\nname: progress-audit\ndescription: >\n  Audit how much of a project is actually built by diffing its specs, functional\n  docs, and requirement registers against the real code into an honest, verified\n  progress matrix (per feature/subfeature and global). Use when asked how far\n  along a project is, what's left, percent complete, a progress or\n  status/completion report, or to \"compare the specs to the code\".\nrisk_level: low\nwrites_files: false\nrequires_tools: []\nsource:\n  upstream: vendored, third-party\n  license: unspecified upstream\n  imported: 2026-08-02\n---\n\n# Progress Audit\n\nMeasure what is _delivered_, not what is _reported_. The output is a per-feature\nprogress matrix plus a global verdict, honest enough to plan against.\n\n## When to use\n\n- \"How far along are we / what's left / are we on track?\"\n- A progress, status, or completion report across a whole project or domain.\n- Comparing specs / functional docs / requirements to the code actually on a branch.\n- Before scoping remaining work (feeds `completion-plan`).\n\n## Method\n\n1. **Map the requirement sources.** Enumerate the specs, functional docs,\n   requirement registers, and any priority/sequencing tiers. This is the\n   denominator — what _should_ exist.\n2. **Map the code.** Enumerate the real modules, routes/endpoints, jobs, tables,\n   and UI screens on the target branch. Split backend vs frontend explicitly.\n3. **Diff per feature/subfeature.** For each capability the spec requires, find\n   and read the actual code. Rate done / partial / skeleton / gap / gated, with\n   an honest percent, concrete file-path evidence, and what's missing.\n4. **Roll up** to per-domain and global figures, and to a layered verdict (e.g.\n   backend vs frontend vs governance) — a single average hides imbalance.\n\n## Verify, don't trust\n\n- A capability is **done** only when it is wired and tested — not because a\n  status doc, a task checkbox, a type, or a schema-only table exists. See the\n  `verified-progress-signal` instinct.\n- Distinguish **gap** (simply unbuilt) from **gated** (blocked on a\n  decision/credential) — they need different follow-up.\n- Separate **backend** from **frontend**: an API with no screen is not a\n  delivered feature.\n\n## Run at scale\n\nFor anything beyond a few features, fan out **one sub-agent per feature/domain**\nreturning a **structured schema** (id, status, percent, evidence, gaps), then run\nan **adversarial verification pass** that tries to _refute_ every \"done\"/high\nclaim by opening the cited files. Reconcile assessor vs verifier before rolling\nup. Deterministic orchestration (a workflow) keeps it repeatable.\n\n## Output\n\n- A per-feature/subfeature matrix: status, percent, evidence, gaps, gated items.\n- Per-domain rollup + global figure + a layered honest verdict.\n- Optionally reconcile against any existing status doc and explain divergences.\n- Feed the result into `completion-plan` to scope the remaining work.\n",
+      "tags": [
+        "delivery"
+      ]
+    },
+    {
+      "id": "skill:recall",
+      "type": "skill",
+      "name": "recall",
+      "description": "Reconstruct your recent working context from your own chat history, live state, and the shared record (user reports, prior fixes, incidents), then hand back a tight current-state brief. Use for 'recall my work on X', 'catch me up', 'what have I been working on', 'where did I leave off', before starting or resuming work.",
+      "source": "https://github.com/arhunsaday/agent-kit/blob/main/skills/delivery/recall/SKILL.md",
+      "scope": "project",
+      "harnesses": [
+        "claude-code"
+      ],
+      "enabled": true,
+      "config": {
+        "name": "recall",
+        "description": "Reconstruct your recent working context from your own chat history, live state, and the shared record (user reports, prior fixes, incidents), then hand back a tight current-state brief. Use for 'recall my work on X', 'catch me up', 'what have I been working on', 'where did I leave off', before starting or resuming work.",
+        "disable-model-invocation": true,
+        "source": {
+          "upstream": "cursor/plugins@bb68f23 (pstack, https://github.com/cursor/plugins/tree/main/pstack)",
+          "license": "MIT (Lauren Tan)",
+          "imported": "2026-11-05"
+        },
+        "files": [
+          {
+            "path": "LICENSE",
+            "contents": "MIT License\n\nCopyright (c) 2026 Lauren Tan\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n"
+          }
+        ],
+        "repository": "https://github.com/arhunsaday/agent-kit"
+      },
+      "content": "---\nname: recall\ndescription: \"Reconstruct your recent working context from your own chat history, live state, and the shared record (user reports, prior fixes, incidents), then hand back a tight current-state brief. Use for 'recall my work on X', 'catch me up', 'what have I been working on', 'where did I leave off', before starting or resuming work.\"\ndisable-model-invocation: true\nsource:\n  upstream: cursor/plugins@bb68f23 (pstack, https://github.com/cursor/plugins/tree/main/pstack)\n  license: MIT (Lauren Tan)\n  imported: 2026-11-05\n---\n\n# Recall\n\n**Before you start or resume work, you rebuild the user's recent working context and hand back a tight capsule of where things stand now and what to do next.**\n\nKeep it tight and on-topic. Read only what the in-scope threads need, then stop.\n\nYour context lives in two records. Your own chat history holds what you did and decided. The shared record holds everything that happened around the same code under other names: the symptoms users keep reporting, the fixes that shipped and got reverted, the errors still firing in prod. That second record spans source control, the issue tracker, chat and issue channels, long-form docs, and error tracking. A feature with a long bug tail keeps most of its story there, so don't reconstruct it from your transcripts alone.\n\nTranscripts live where the agent stores them. Claude Code: `~/.claude/projects/<slug>/<uuid>.jsonl`, where `<slug>` is the workspace path with each \"/\" turned into \"-\" (so `/Users/you/proj` becomes `-Users-you-proj`). Codex: `~/.codex/sessions/<yyyy>/<mm>/<dd>/rollout-*.jsonl`. Every line is one chat message or event.\n\n1. Classify, then route. One specific prior chat to resume is a resume of that chat, not this. A human-readable summary of your work is a different task. Recall loads working context across recent chats before you act. If the user already gave you a full state capsule (paths, branch, the change), use it and skip the mining.\n2. Lock the scope before searching. Pin the window (\"recent\" is a real range, default the last 7 days), the topic if named, and the workspace (default the active one. Never read another project's transcripts without being asked). State the scope back. Never quietly turn \"all\" into \"recent N\".\n3. Fan out across your chat history. Spawn parallel subagents on a fast, cheap model, each taking a slice of the corpus. Tell every subagent to order candidates by real modification time (`ls -t`) and never by UUID name, grep the topic first and then read only the matching chats and only their relevant regions, and skip the current chat plus obvious noise (subagent, eval, and test chats). Each returns the same schema, one block per chat: topic, the user's goal, decisions, open threads, struggles and corrections, and artifacts (PRs, tickets, branches), each citing the chat UUID. For one or two chats, skip the fan-out and search directly. The raw transcripts stay in the subagents. The main thread gets only their findings.\n4. Sweep the shared record whenever the topic names a feature, file, subsystem, area, or bug. This is the default, not a judgment call, and \"my work on X\" does not exempt it. Run one investigator per source (source control, issue tracker, chat channels, docs, error tracking), in parallel with the chat-history mining. Ask each: what is the current state, what was tried and did not hold, and what are users still reporting. Null results are findings. Skip an unavailable MCP and say so. Fold what comes back into the brief. Skip this step only for pure activity recall with no named target (\"what did I do this week\"), where your own history and live state are the entire answer.\n5. Verify against live state. Take the PRs, branches, and tickets that the mining and the sweep surfaced and check them with `git` and `gh`. When the answer hinges on what an agent actually did (the tools it ran, files it read, errors it hit), read the full transcript, not just a trimmed local copy.\n6. Write the brief to the contract below. Group by thread. Stay on the named topic.\n\n## Output contract\n\nLead with the capsule, then the thread status, then the problems, then the next move. Deeper detail goes below or gets cut.\n\n- **Capsule.** At most 5 bullets. What this work is and where it stands overall.\n- **Threads.** One line each, prefixed with exactly one status tag: `[merged #N]`, `[open PR #N]`, `[in flight <branch>]`, `[verified, uncommitted]`, `[reverted #N]`, or `[planned, not started]`. A thread with no tag is not done yet, so tag it.\n- **Problems.** At most 5, the recurring ones. Include the symptoms users keep reporting and any fix that shipped and was reverted, so the next attempt starts where the last one failed.\n- **Next move.** The single most useful next action, concrete.\n\nAn adjacent feature or ticket stays out unless it blocks this one. When the capsule and thread lines outgrow a screen, cut detail before you cut threads. Write the brief through the `unslop` skill, cite chat findings by UUID and shared-record findings by their source (PR #, ticket ID, chat permalink, error-tracker issue), and sanitize private context before any public output.\n\n**Reply:** the brief, to the contract above.\n",
       "tags": [
         "delivery"
       ]
@@ -942,6 +1008,105 @@
       "content": "---\nname: lgtm-observability\ndescription: Query and operate the Grafana LGTM stack — Prometheus/Mimir metrics, Loki logs, Tempo traces, and Alloy collectors. PromQL and LogQL patterns, correlating the three signals, and instrumenting a service so it is diagnosable. Use when investigating an incident, writing a dashboard or alert rule, configuring Alloy, or when a service has no useful telemetry.\nsource:\n  upstream: hand-authored in preflight\n  imported: 2026-09-20\nrisk_level: medium\nwrites_files: true\n---\n\n# LGTM: Loki, Grafana, Tempo, Mimir\n\nWith the Grafana MCP servers connected (one per environment), the agent queries\nthese directly instead of you pasting screenshots.\n\n## The investigation order\n\n```\nalert / symptom\n  → metrics (Prometheus/Mimir)  WHAT is wrong, and since when\n  → logs    (Loki)              WHY — the error at that timestamp\n  → traces  (Tempo)             WHERE in the request path\n  → fix → verify on the same dashboard\n```\n\n**Metrics before logs, always.** A log query without a time window and a service\nis a fishing expedition that returns a million lines and burns the context.\n\n## PromQL\n\nAlways a `rate()` over a counter, never the raw counter:\n\n```promql\n# error rate by route\nsum(rate(http_requests_total{job=\"api\",status=~\"5..\"}[5m])) by (route)\n\n# p95 latency — the bucket must exist, or this silently returns nothing\nhistogram_quantile(0.95,\n  sum(rate(http_request_duration_seconds_bucket[5m])) by (le, route))\n\n# saturation: is the pod being throttled?\nsum(rate(container_cpu_cfs_throttled_seconds_total{namespace=\"prod\"}[5m])) by (pod)\n\n# is it a deploy? correlate with the restart\nchanges(kube_pod_container_status_restarts_total{namespace=\"prod\"}[1h]) > 0\n```\n\nRate window rule: **at least 4× the scrape interval.** `[1m]` on a 30s scrape\ngives two points and a jagged, untrustworthy line.\n\n## LogQL\n\nFilter by **label** before matching text — labels are indexed, text is not:\n\n```logql\n{namespace=\"prod\", app=\"api\"} |= \"error\" | json | status >= 500\n\n# aggregate first, drill in second — never dump raw lines into the context\nsum by (error_type) (count_over_time({app=\"api\"} | json | __error__=\"\" [5m]))\n\n# extract a numeric field and chart it\n{app=\"api\"} | json | unwrap duration_ms | quantile_over_time(0.95, [5m]) by (route)\n```\n\n`{app=\"api\"} |= \"error\"` over 7 days will time out. Narrow the window first.\n\n**Never make a high-cardinality field a label** — user id, request id, trace id.\nThat is what kills a Loki install. Keep them in the log line and extract with\n`| json`.\n\n## Tempo\n\nTraces answer \"where did the time go\". The link that makes it usable is\n`traceID` in the log line — Grafana turns it into a jump from log to trace.\n\nFind slow traces by service and duration, then read the span breakdown. A span\ntree with one 900ms gap and no child is almost always a network call that is not\ninstrumented.\n\n## Alloy\n\nGrafana Alloy is the collector — replaces Promtail, the Grafana Agent, and\nstandalone OTel collectors. Config is in its own HCL-like language:\n\n```alloy\ndiscovery.kubernetes \"pods\" { role = \"pod\" }\n\nloki.source.kubernetes \"pods\" {\n  targets    = discovery.kubernetes.pods.targets\n  forward_to = [loki.process.labels.receiver]\n}\n\nloki.process \"labels\" {\n  stage.json { expressions = { level = \"\", traceID = \"\" } }\n  stage.labels { values = { level = \"\" } }      // low cardinality only\n  forward_to = [loki.write.default.receiver]\n}\n\nloki.write \"default\" {\n  endpoint { url = \"https://loki.example.com/loki/api/v1/push\" }\n}\n\notelcol.receiver.otlp \"default\" {\n  grpc {}\n  output { traces = [otelcol.exporter.otlp.tempo.input] }\n}\n```\n\nRules that matter:\n\n- **`stage.labels` only for low-cardinality values** — level, namespace, app.\n  Everything else stays in the line.\n- One Alloy per node as a DaemonSet for logs; a Deployment for OTLP ingest.\n- Validate with `alloy fmt` and `alloy run --stability.level=experimental` before\n  rolling out. A bad config silently drops telemetry — you find out during the\n  next incident.\n\n## Instrumenting a service\n\nIf a dashboard cannot show **latency, traffic, errors, saturation** for a\nservice, that is the gap — and it is cheaper to fix now than during an incident.\n\n- RED for request-driven services (Rate, Errors, Duration)\n- USE for resources (Utilisation, Saturation, Errors)\n- Emit `traceID` on every log line\n- Histogram buckets chosen around your SLO, not the library defaults\n\n## Alerting\n\n**Alert on symptoms users feel** — error rate, latency, queue age. Not on\ncauses — CPU, memory. A cause-based alert fires when nothing is wrong and stays\nquiet when something is.\n\nEvery alert needs: a runbook link, a clear owner, and a reason it is worth\nwaking someone. If it does not, it is a dashboard panel, not an alert.\n\n## During an incident\n\n1. **Preserve evidence before remediating**, when safe\n2. Stabilise — rollback beats a forward fix under pressure\n3. One change at a time, with a stated health gate\n4. Write the timeline as you go\n\nSee the `plan-before-operational-change` instinct.\n",
       "tags": [
         "ops"
+      ]
+    },
+    {
+      "id": "skill:benchmark-checklist",
+      "type": "skill",
+      "name": "benchmark-checklist",
+      "description": "Vet a perf measurement (limiter, tuning, limits, errors, repeatability, relevance, and whether the work happened) before you report or act on it. Use when you run a benchmark or report a speedup or regression you measured.",
+      "source": "https://github.com/arhunsaday/agent-kit/blob/main/skills/quality/benchmark-checklist/SKILL.md",
+      "scope": "project",
+      "harnesses": [
+        "claude-code"
+      ],
+      "enabled": true,
+      "config": {
+        "name": "benchmark-checklist",
+        "description": "Vet a perf measurement (limiter, tuning, limits, errors, repeatability, relevance, and whether the work happened) before you report or act on it. Use when you run a benchmark or report a speedup or regression you measured.",
+        "disable-model-invocation": true,
+        "source": {
+          "upstream": "cursor/plugins@bb68f23 (pstack, https://github.com/cursor/plugins/tree/main/pstack)",
+          "license": "MIT (Lauren Tan)",
+          "imported": "2026-11-05"
+        },
+        "files": [
+          {
+            "path": "LICENSE",
+            "contents": "MIT License\n\nCopyright (c) 2026 Lauren Tan\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n"
+          }
+        ],
+        "repository": "https://github.com/arhunsaday/agent-kit"
+      },
+      "content": "---\nname: benchmark-checklist\ndescription: \"Vet a perf measurement (limiter, tuning, limits, errors, repeatability, relevance, and whether the work happened) before you report or act on it. Use when you run a benchmark or report a speedup or regression you measured.\"\ndisable-model-invocation: true\nsource:\n  upstream: cursor/plugins@bb68f23 (pstack, https://github.com/cursor/plugins/tree/main/pstack)\n  license: MIT (Lauren Tan)\n  imported: 2026-11-05\n---\n\n# Benchmark checklist\n\nUse this when you produce a performance number: a PR's before and after, a regression claim, a hillclimb harness, or a library or config choice. Answer each question with evidence from a run, not a guess about the code.\n\nFor a quick ballpark the user asked for, one run is enough. Still check questions 4 and 7, and say that it is one run. Skip the rest unless that run looks wrong. A choice between options is never a ballpark.\n\n## Before you run anything\n\n- Write down the claim you expect to make, in the words you would ship (\"export is 30% faster at p50 on the 60k-row dataset\"). The questions test that sentence.\n- Read the measurement script. Note what it times, counts, and ignores.\n- Check the load average with `uptime` and the core count with `nproc`. If the machine is busy, find out what is running. If you cannot stop it, interleave the sides so both see the same noise, and say so in the report.\n\n## The questions\n\n1. **Why not double?** Name the limiter. Profile in a run you do not report, because profilers and tracers slow the work down. Use CPU per process (`top`, `pidstat`), a runtime profiler (`node --cpu-prof`, `py-spy`, `perf`), I/O wait, and syscall counts (`strace -c` on Linux), then map the hot spot to source. Watch the load generator too: if it saturates first, you measured the load generator. If a change did not move the number, the limiter explains why, so find it before you call the change useless.\n2. **Was it tuned?** Run every side the way production runs it: release builds, production flags and env, batching and transaction settings, connection pools, caches as warm or cold as production sees them, and the same versions and data. If one side runs on defaults, you compared configurations, not implementations. A limiter that is a setting (a commit per row, a debug build, a missing index) means that side is untuned. Tune it and measure again before you pick a winner. If you cannot tune it, do not pick a winner from that run. When the user is choosing what to adopt, narrowing the claim to the code as it ships today does not fix this, because they adopt the option, not today's settings.\n3. **Did it break limits?** Do the arithmetic. Compare bytes per second with disk and network bandwidth, operations per second times cost per operation with your cores, and the time saved with the time the changed piece took. Removing a piece that takes 10% of the run can make the run at most about 11% faster. A result past a limit measured something other than the work, such as a cache, a no-op, or a bug.\n4. **Did it error?** Count failures and non-success responses, and check that outputs are correct, not just present. Rejections are often fast, and timeouts and retries are slow. If the script does not count errors, add the count.\n5. **Does it reproduce?** Run each side at least 5 times, alternating (A, B, A, B, and so on) so warmup, lazy initialization, caches, and drift favor neither. Report the median and range. A gap smaller than the run-to-run variation is no measurable difference. When the call is close, use a rank-sum test or the harness's own statistics.\n6. **Does it matter?** Next to any micro result, measure the end-to-end path a user waits on, with realistic data sizes and concurrency, and report the micro result as a share of the whole. A helper that takes 1% of a request can make the request at most 1% faster, however fast the helper gets.\n7. **Did it even happen?** Confirm the work ran inside the timed region: the request reached the server, the rows were written, the bytes were read, and the code used the result. Lazy code (generators nobody iterates, promises nobody awaits, results the JIT can discard) and timeouts produce numbers for work that never happened.\n\n## Report\n\n- Lead with the verdict: faster, slower, no measurable difference, or inconclusive.\n- Give the number with its unit, the run count, the range, and the limiter. For example, \"p50 41 ms → 33 ms, median of 7 runs per side, range 32 to 35 ms after, bound by JSON parsing on one core.\"\n- Call the verdict inconclusive when you claim a difference but cannot name the limiter, when a side ran untuned, or when you could not check questions 4 and 7. Name the gap.\n- Keep a PR body to one primary number. Put the runs, range, and limiter evidence in a linked artifact or notes file.\n\n## Other perf material\n\n- Vet a perf issue's baseline before planning from it, and every number after that.\n- Vet a hillclimb harness before you freeze it. A frozen harness that prints error and work counts checks questions 4 and 7 on every keep-or-revert.\n",
+      "tags": [
+        "quality"
+      ]
+    },
+    {
+      "id": "skill:change-blast-radius",
+      "type": "skill",
+      "name": "change-blast-radius",
+      "description": "Find what a change could break somewhere else before it ships, beyond the diff, and prove the one fact it's safe because of by running real code instead of writing it up. Use for 'blast radius of X', 'what could this break', or reviewing a small diff you don't trust.",
+      "source": "https://github.com/arhunsaday/agent-kit/blob/main/skills/quality/change-blast-radius/SKILL.md",
+      "scope": "project",
+      "harnesses": [
+        "claude-code"
+      ],
+      "enabled": true,
+      "config": {
+        "name": "change-blast-radius",
+        "description": "Find what a change could break somewhere else before it ships, beyond the diff, and prove the one fact it's safe because of by running real code instead of writing it up. Use for 'blast radius of X', 'what could this break', or reviewing a small diff you don't trust.",
+        "disable-model-invocation": true,
+        "source": {
+          "upstream": "cursor/plugins@bb68f23 (pstack, https://github.com/cursor/plugins/tree/main/pstack)",
+          "license": "MIT (Lauren Tan)",
+          "imported": "2026-11-05"
+        },
+        "files": [
+          {
+            "path": "LICENSE",
+            "contents": "MIT License\n\nCopyright (c) 2026 Lauren Tan\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n"
+          }
+        ],
+        "repository": "https://github.com/arhunsaday/agent-kit"
+      },
+      "content": "---\nname: change-blast-radius\ndescription: \"Find what a change could break somewhere else before it ships, beyond the diff, and prove the one fact it's safe because of by running real code instead of writing it up. Use for 'blast radius of X', 'what could this break', or reviewing a small diff you don't trust.\"\ndisable-model-invocation: true\nsource:\n  upstream: cursor/plugins@bb68f23 (pstack, https://github.com/cursor/plugins/tree/main/pstack)\n  license: MIT (Lauren Tan)\n  imported: 2026-11-05\n---\n\n# Change blast radius\n\nFind what a change breaks somewhere else, before it ships. Use for \"blast radius of X\", \"what could this break\", or reviewing a small diff you don't trust yet.\n\nNot the `blast-radius` mod under `plugins/`, which guards dangerous commands. This skill reviews a change.\n\nListing the callers is not the job. The agent can grep those in a second. The job is the breakage grep won't show you.\n\n## Don't trust your own writeup\n\nA blast-radius writeup that sounds right is worthless. It reads as convincing whether or not it's true. So don't hand back the writeup. Find the one or two facts the whole thing depends on and prove them by running code.\n\n### How sure are you\n\nFor each fact the change's safety depends on, get it as far down this list as is cheap, and say where it stopped.\n\n1. You said so. Worthless on its own.\n2. You pointed at the line. A real `file:line`, or the library's own source.\n3. You showed the bad case can't happen. You walked the failure step by step and it doesn't reach.\n4. You ran it. A script or test that calls the real code and fails loud if you're wrong.\n5. You reproduced it in the running app.\n\nStep 4 is usually one small script that imports the same library the app ships and calls the exact function you're worried about.\n\n## Steps\n\n1. Read the change. The diff, the symbols it adds, changes, and deletes, and what it now does differently, including the part the diff doesn't spell out. Pull the PR and commits with `git log` and `gh`.\n2. Find the one fact it's safe because of. Most changes that look risky are safe because of a single fact, like \"this call only drops already-dead cache entries and does nothing else\". Find that fact. If it holds, most risky cases are cleared at once. Spend your time here, not on a long list of maybes.\n3. Look where grep stops. Read the source of the library you call, and check its pinned version and any local patch. Work out when things run: microtasks, unmount and teardown, Solid versus React. Follow what a symbol search misses: the JSON an API returns, a DB column, a wire format, another language reading the same bytes, a feature flag, code three hops downstream.\n4. Be honest about each risk. Give it a real chance of happening and a real cost if it does. Keep the risks you confirmed. List the ones you checked and cleared separately. Cite a real `file:line`, a search that finds nothing is still an answer, and never make up a caller or an API.\n5. Prove the one fact. Write a script or test that runs the real code, run it, and paste what happened.\n6. For a big or wide change, ask more than one model the same question (parallel subagents on different models) and merge the answers. Different models catch different real bugs.\n\n## What to hand back\n\n- **What it does.** What changed, including the part that isn't obvious.\n- **The one fact it's safe because of.** State it, say which step you got it to, and show the proof. If you couldn't prove it, write unproven.\n- **Risks.** Each names how it breaks, the `file:line`, how likely and how bad, and how to check. Paste the proof for the ones that matter.\n- **Cleared.** What you checked and why it's fine.\n- **Before you merge.** The cheapest test or repro that catches the real bug, including the script you wrote.\n\nWrite it through `unslop`, cite real code, and strip anything private before it goes anywhere public.\n\n**Reply:** the writeup above, with the one safety fact either proven or marked unproven.\n",
+      "tags": [
+        "quality"
+      ]
+    },
+    {
+      "id": "skill:correct",
+      "type": "skill",
+      "name": "correct",
+      "description": "Find the mistakes agents keep repeating in this repo and make each one impossible. Try architecture first, then types, then a lint whose error names the fix, then a test, and write docs last. Prove each check fails on a real past mistake. Repeat this each time the operator corrects you.",
+      "source": "https://github.com/arhunsaday/agent-kit/blob/main/skills/quality/correct/SKILL.md",
+      "scope": "project",
+      "harnesses": [
+        "claude-code"
+      ],
+      "enabled": true,
+      "config": {
+        "name": "correct",
+        "description": "Find the mistakes agents keep repeating in this repo and make each one impossible. Try architecture first, then types, then a lint whose error names the fix, then a test, and write docs last. Prove each check fails on a real past mistake. Repeat this each time the operator corrects you.",
+        "disable-model-invocation": true,
+        "source": {
+          "upstream": "cursor/plugins@bb68f23 (pstack, https://github.com/cursor/plugins/tree/main/pstack)",
+          "license": "MIT (Lauren Tan)",
+          "imported": "2026-11-05"
+        },
+        "files": [
+          {
+            "path": "LICENSE",
+            "contents": "MIT License\n\nCopyright (c) 2026 Lauren Tan\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n"
+          }
+        ],
+        "repository": "https://github.com/arhunsaday/agent-kit"
+      },
+      "content": "---\nname: correct\ndescription: \"Find the mistakes agents keep repeating in this repo and make each one impossible. Try architecture first, then types, then a lint whose error names the fix, then a test, and write docs last. Prove each check fails on a real past mistake. Repeat this each time the operator corrects you.\"\ndisable-model-invocation: true\nsource:\n  upstream: cursor/plugins@bb68f23 (pstack, https://github.com/cursor/plugins/tree/main/pstack)\n  license: MIT (Lauren Tan)\n  imported: 2026-11-05\n---\n\n# Correct\n\nThe operator keeps correcting agents in this repo for the same mistakes. Change the repo so the next agent can't make them.\n\nAssume every contributor is an agent that sees only the files it opened, copies the nearest example, and takes the shortest path that compiles. Design the repo so a change that looks right from one file is right for the whole repo.\n\n## Find the mistake classes\n\nFirst, read recent commits, reverts, review comments, agent instruction files, and comments that explain workarounds. Group the mistakes into classes. A class counts once it has happened twice.\n\n## Fix each class at the highest level that works\n\n1. **Eliminate it with architecture.** Give each piece of state one owner and each task one supported way. Hide internals so the wrong import fails. Replace hand-synced lists with one source of truth. Delete old ways and dead code an agent would copy.\n2. **Enforce it with types so the bad state can't be written.** If bad code still compiles, add a lint or CI check whose error names the file, type, or function to use instead. If the pattern is already common, fail only when a change adds more.\n3. **Test the behavior.** Fix or delete any test that still passes when the behavior it checks breaks, or that fails when only the internals change.\n4. **Write docs or agent rules last, only for judgment calls.** Nothing fails when an agent skips them.\n\n## Fix and prove\n\nThen fix the most frequent classes now, one commit each. Prove each new check fails on a real past mistake. Run the same command locally and in CI. Exceptions go on the offending line with a reason, an expiry date, and a human's approval.\n\n## Keep the rule table\n\nLast, keep a table in the agent instruction file that pairs each rule with what enforces it. When the operator corrects you, fix the mistake and add the rule. If the rule was already there and nothing enforces it, that's a repeat, so fix it at the highest level in the same change. Drop a rule once its mistake can't happen.\n\n**Reply:** each class with its evidence, the level you picked, and why a higher level didn't work.\n",
+      "tags": [
+        "quality"
       ]
     },
     {
@@ -2477,6 +2642,36 @@
       ]
     },
     {
+      "id": "plugin:change-ledger",
+      "type": "plugin",
+      "name": "change-ledger@arhun-plugins",
+      "description": "Lists the files Claude touched this session with +/- lines in a band above the prompt, and a Commit this batch button that asks Claude to commit exactly those files; collapses to one line",
+      "source": "https://github.com/arhunsaday/agent-kit/blob/main/plugins/change-ledger",
+      "scope": "global",
+      "harnesses": [
+        "claude-code"
+      ],
+      "enabled": true,
+      "config": {
+        "marketplace": {
+          "name": "arhun-plugins",
+          "source": {
+            "source": "github",
+            "repo": "arhunsaday/agent-kit"
+          }
+        },
+        "version": "0.1.0",
+        "category": "mod"
+      },
+      "tags": [
+        "arhun-plugins",
+        "mod",
+        "git",
+        "changes",
+        "commit"
+      ]
+    },
+    {
       "id": "plugin:context-cache",
       "type": "plugin",
       "name": "context-cache@arhun-plugins",
@@ -2566,6 +2761,36 @@
       ]
     },
     {
+      "id": "plugin:net-watch",
+      "type": "plugin",
+      "name": "net-watch@arhun-plugins",
+      "description": "Lists the domains contacted in the session (WebFetch URLs; curl, wget, npm, pip and git hosts in Bash) with allow and deny per domain kept in .claude/net-watch.json; denied domains are blocked on the next call",
+      "source": "https://github.com/arhunsaday/agent-kit/blob/main/plugins/net-watch",
+      "scope": "global",
+      "harnesses": [
+        "claude-code"
+      ],
+      "enabled": true,
+      "config": {
+        "marketplace": {
+          "name": "arhun-plugins",
+          "source": {
+            "source": "github",
+            "repo": "arhunsaday/agent-kit"
+          }
+        },
+        "version": "0.1.0",
+        "category": "mod"
+      },
+      "tags": [
+        "arhun-plugins",
+        "mod",
+        "network",
+        "safety",
+        "domains"
+      ]
+    },
+    {
       "id": "plugin:plan-progress",
       "type": "plugin",
       "name": "plan-progress@arhun-plugins",
@@ -2621,6 +2846,36 @@
         "preflight",
         "audit",
         "config"
+      ]
+    },
+    {
+      "id": "plugin:scope-fence",
+      "type": "plugin",
+      "name": "scope-fence@arhun-plugins",
+      "description": "Declare the paths Claude may change (.claude/fence.json or /scope-fence); Write, Edit and MultiEdit outside are held with Allow once / Block, and a band shows the fence",
+      "source": "https://github.com/arhunsaday/agent-kit/blob/main/plugins/scope-fence",
+      "scope": "global",
+      "harnesses": [
+        "claude-code"
+      ],
+      "enabled": true,
+      "config": {
+        "marketplace": {
+          "name": "arhun-plugins",
+          "source": {
+            "source": "github",
+            "repo": "arhunsaday/agent-kit"
+          }
+        },
+        "version": "0.1.0",
+        "category": "mod"
+      },
+      "tags": [
+        "arhun-plugins",
+        "mod",
+        "safety",
+        "scope",
+        "guard"
       ]
     },
     {

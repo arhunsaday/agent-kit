@@ -17,6 +17,7 @@ harvest-questions ←───────────── open questions ─�
 | [`completion-plan`](completion-plan/) | Specs + audit → the backlog of what remains, each item with a plan and a ticket |
 | [`harvest-questions`](harvest-questions/) | Specs → one RAID file per open question, risk, assumption |
 | [`ai-time-estimates`](ai-time-estimates/) | A scope → effort in agent-sessions, with a confidence band |
+| [`recall`](recall/) | Rebuild recent working context from chat history, live git/gh state and the shared record, then hand back a tight brief (pstack, MIT) |
 
 `progress-audit` is the one worth reaching for even when nothing else is in
 play: it measures completion against **wired, tested code**, never against a

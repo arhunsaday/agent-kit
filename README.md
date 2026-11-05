@@ -49,7 +49,7 @@ In Claude Code, add the marketplace once and install from it:
 
 |                    | Count   |                                                                                       |
 | ------------------ | ------- | ------------------------------------------------------------------------------------- |
-| Skills (mine)      | **51**  | communication · delivery · quality · architecture · design · stack · ai · ops · tools |
+| Skills (mine)      | **56**  | communication · delivery · quality · architecture · design · stack · ai · ops · tools |
 | Hooks              | 9       | 3 blocking by default (secret reads, protected files, red-tests-no-PR); `block-dangerous` is deprecated |
 | Slash commands     | 3       | papercut · skills-sync · session-audit |
 | Subagents          | 11      | specialised roles in `claude/agents/` |

@@ -10,8 +10,9 @@ shape of the output, never what gets built.
 | [`caveman-review`](caveman-review/) | One line per review comment: location, problem, fix |
 | [`ponytail`](ponytail/) | Forces the laziest solution that works. YAGNI, stdlib before custom, one line before fifty |
 | [`abrege-frere`](abrege-frere/) | Same idea as `caveman`, in French, without the caveman grammar |
+| [`unslop`](unslop/) | Edit text to remove AI tells: vocabulary, filler, em dashes, mannered prose. Rule numbers are stable ids (pstack, MIT) |
 
-All five are **explicit modes** — they activate on request and stay on until
+All of the style modes except `unslop` are **explicit modes** — they activate on request and stay on until
 asked otherwise. None of them should ever fire on their own.
 
 One caveat worth knowing: `ponytail` argues against adding dependencies, while
