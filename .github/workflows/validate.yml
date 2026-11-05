@@ -90,13 +90,18 @@ jobs:
 
   catalog:
     runs-on: ubuntu-latest
-    # Until @arhunsaday/preflight is on npm this job reports without failing.
-    continue-on-error: true
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
       # The index format is Preflight's schema, so the version is pinned.
+      # Before the first npm publish the check cannot run: say so and stop.
+      # From the publish on, a stale index fails the job.
       - name: catalog/index.json is up to date
-        run: npx --yes @arhunsaday/preflight@0.1.0 catalog build . --repo arhunsaday/agent-kit --check
+        run: |
+          if ! npm view @arhunsaday/preflight@0.1.0 version >/dev/null 2>&1; then
+            echo "::warning::@arhunsaday/preflight@0.1.0 is not on npm yet; the catalogue check did not run."
+            exit 0
+          fi
+          npx --yes @arhunsaday/preflight@0.1.0 catalog build . --repo arhunsaday/agent-kit --check
