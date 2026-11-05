@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "arhun-plugins",
-  "description": "Arhun Saday's Claude Code plugins: mods, skills, commands, agents and hooks.",
+  "description": "agent-kit: Arhun Saday's Claude Code plugins and mods. The same repository holds skills (npx skills add arhunsaday/agent-kit) and a Preflight content source.",
   "owner": {
     "name": "Arhun Saday",
     "url": "https://github.com/arhunsaday"

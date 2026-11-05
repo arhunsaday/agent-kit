@@ -20,7 +20,7 @@ what to do instead — not just "denied".
 
 | Hook | Event | Matcher | Blocks | Does |
 | --- | --- | --- | --- | --- |
-| `block-dangerous.sh` | PreToolUse | `Bash` | ✅ | `rm -rf /`, `git reset --hard`, force-push, `DROP TABLE`, `curl \| sh`, fork bombs |
+| `block-dangerous.sh` (deprecated: use the [`blast-radius`](../../plugins/blast-radius) plugin) | PreToolUse | `Bash` | ✅ | `rm -rf /`, `git reset --hard`, force-push, `DROP TABLE`, `curl \| sh`, fork bombs |
 | `block-secret-reads.sh` | PreToolUse | `Read\|Grep` | ✅ | Keeps `.env`, `*.pem`, keys **out of the context window** |
 | `protect-files.sh` | PreToolUse | `Edit\|Write` | ✅ | No writes to secrets, lockfiles, `.git/` |
 | `require-tests-for-pr.sh` | PreToolUse | `Bash` | ✅ | No green suite, no `gh pr create` |
@@ -61,7 +61,7 @@ macOS only (`afplay`); swap `paplay` on Linux.
 Hooks read the tool payload as JSON on stdin:
 
 ```bash
-echo '{"tool_input":{"command":"rm -rf /tmp/x"}}' | ~/.claude/hooks/block-dangerous.sh; echo "exit=$?"
+echo '{"tool_input":{"file_path":".env"}}' | ~/.claude/hooks/protect-files.sh; echo "exit=$?"
 ```
 
 Expect `exit=2` plus a message on stderr.

@@ -25,7 +25,7 @@ In this kit: the `quality/` gates (`verify-security` especially) and
   one step.
 - An agent will happily write a destructive migration because the schema change
   implies it. Every `DROP COLUMN` needs a human decision about the data.
-- `block-dangerous.sh` blocks `DROP TABLE` / `DROP DATABASE` / `TRUNCATE` in
+- The `blast-radius` plugin holds SQL drops (`DROP TABLE`, `DROP DATABASE`) in
   Bash — but not inside a generated migration file. Read those yourself.
 - Test the **down** migration. A migration you cannot reverse is a deploy you
   cannot roll back.

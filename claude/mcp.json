@@ -12,7 +12,9 @@
     "  - Every server injects its tool definitions into EVERY session's context.",
     "    Enable what the current work needs; disable the rest.",
     "",
-    "Full setup notes: docs/docs/mcp/my-servers.md"
+    "Full setup notes: guides/mcp/my-servers.md. Hosts and tokens that are yours",
+    "alone (work Jira, Grafana, local servers) belong in your dotfiles overlay,",
+    "not in this public file."
   ],
   "mcpServers": {
     "github": {

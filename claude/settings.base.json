@@ -124,10 +124,6 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/block-dangerous.sh"
-          },
-          {
-            "type": "command",
             "command": "~/.claude/hooks/log-commands.sh"
           },
           {

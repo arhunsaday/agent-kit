@@ -8,7 +8,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / 'loadouts/loadouts.json'
-KINDS = ('skills', 'subagents', 'hooks', 'mcp', 'instincts', 'workflows')
+KINDS = ('skills', 'subagents', 'hooks', 'mcp', 'instincts', 'workflows', 'plugins')
 
 
 def read():
@@ -50,6 +50,8 @@ def vendored(kind):
         return {p.stem for p in (ROOT / 'claude/hooks').glob('*.sh')}
     if kind == 'instincts':
         return {p.stem for p in (ROOT / 'project-templates/shared/agent/instincts').glob('*.md')} - {'README'}
+    if kind == 'plugins':
+        return {p.parent.parent.name for p in (ROOT / 'plugins').glob('*/.claude-plugin/plugin.json')}
     return None  # mcp and workflows are not files in this repo
 
 

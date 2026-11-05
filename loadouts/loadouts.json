@@ -26,8 +26,10 @@
         "hooks": [
           { "id": "block-secret-reads", "why": "A key read once is in the transcript forever", "blocking": true },
           { "id": "protect-files", "why": "Lockfiles and .env are not agent-editable", "blocking": true },
-          { "id": "block-dangerous", "why": "Catches the catastrophic typo, not ordinary work", "blocking": true },
           { "id": "format-after-edit", "why": "Formatting is not worth a conversation" }
+        ],
+        "plugins": [
+          { "id": "blast-radius", "why": "Holds a destructive command and shows what it would destroy; replaces block-dangerous.sh", "blocking": true }
         ],
         "skills": [
           { "id": "ponytail", "scope": "global", "why": "Agents over-build by default; this is the counterweight" },

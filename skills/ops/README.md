@@ -27,4 +27,4 @@ diagnoses a cluster in plain language, read-only by default.
 **Observe, plan, bound, then mutate.** Plan/diff before every apply, `--context`
 explicit on every `kubectl`, GitOps means editing manifests in git rather than
 the cluster. See the `plan-before-operational-change` instinct and
-[the devops workflow](../../../docs/docs/workflows/devops.md).
+[the devops workflow](../../guides/workflows/devops.md).

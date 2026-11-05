@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 #
+# DEPRECATED: superseded by the blast-radius mod (plugins/blast-radius), which
+# holds the same commands and shows what they would destroy. It is no longer
+# wired in claude/settings.base.json nor listed in any loadout; the file stays
+# for anyone who still points a hook at it.
+#
 # PreToolUse(Bash) — refuse destructive shell commands.
 #
 # Exit 2 is the contract: it blocks the call AND feeds stderr back to Claude so

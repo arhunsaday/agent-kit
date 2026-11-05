@@ -22,3 +22,8 @@ plugins/plan-progress/tests/*.results.json
 
 # context-cache /cache-status report
 context-cache-status.json
+
+# kit checkers and session logs
+__pycache__/
+*.pyc
+PAPERCUTS.md
